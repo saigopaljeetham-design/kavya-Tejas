@@ -17,7 +17,7 @@ export function MandapScene() {
 
       <div className="mandap-reference-frame" aria-label="Wedding mandap">
         <div className="mandap-reference-image">
-          <Image src="/images/ceremonies/muhurtam.png" alt="Kavya and Tejas wedding mandap" fill sizes="(max-width: 760px) 92vw, 56vw" className="mandap-reference-photo" />
+          <Image src="/images/decorations/reference-mandap.jpg" alt="Kavya and Tejas wedding mandap" fill sizes="(max-width: 760px) 92vw, 56vw" className="mandap-reference-photo" />
           <div className="mandap-reference-shine" />
           <div className="mandap-glow-orb" />
         </div>
