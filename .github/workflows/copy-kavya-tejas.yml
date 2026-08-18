@@ -1,0 +1,30 @@
+name: Copy Kavya & Tejas snapshot
+
+on:
+  push:
+    branches: [main]
+
+permissions:
+  contents: write
+
+jobs:
+  copy:
+    if: github.actor != 'github-actions[bot]'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Project-2
+        uses: actions/checkout@v4
+
+      - name: Copy source repository
+        run: |
+          git clone --depth 1 https://github.com/sandy537/kavya-Tejas.git /tmp/kavya-tejas
+          rsync -a --delete --exclude='.git' --exclude='.github/' /tmp/kavya-tejas/ ./
+          rm -f .github/workflows/copy-kavya-tejas.yml
+
+      - name: Commit copied snapshot
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -A
+          git commit -m "Copy Kavya & Tejas wedding invitation" || exit 0
+          git push origin HEAD:main
