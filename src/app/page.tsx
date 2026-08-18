@@ -9,6 +9,7 @@ import { LuxuryCountdown } from "@/components/invitation/LuxuryCountdown";
 import { MandapScene } from "@/components/invitation/MandapScene";
 import { CinematicGallery } from "@/components/invitation/CinematicGallery";
 import { CinematicEnvelope } from "@/components/invitation/CinematicEnvelope";
+import { ScratchDateReveal } from "@/components/invitation/ScratchDateReveal";
 import { OccasionsSection } from "@/components/invitation/OccasionsSection";
 
 function GoldLine() { return <span className="lux-line" aria-hidden="true" />; }
@@ -29,6 +30,7 @@ export default function Page() {
     {opened && <main>
       <nav className="lux-nav"><a href="#top" className="lux-nav-mark">K<span>&</span>T</a><div className="lux-nav-links"><a href="#celebrations">Occasions</a><a href="#muhurtham">Muhurtham</a><a href="#gallery">Gallery</a><a href="#venue">Venue</a></div><div className="lux-nav-actions"><button aria-label="Switch language" onClick={() => setLanguage(language === "EN" ? "TE" : "EN")}>{language}</button><button aria-label="Toggle music" onClick={toggleMusic}>{music ? <Volume2 size={16} /> : <VolumeX size={16} />}</button></div></nav>
       <section id="top" className="lux-hero"><div className="lux-hero-image"><Image src={weddingConfig.couplePhoto} alt="Kavya and Tejas" fill priority sizes="100vw" className="object-cover" /></div><div className="lux-hero-overlay" /><div className="lux-hero-copy"><p className="lux-micro">WITH THE BLESSINGS OF OUR FAMILIES</p><h1>{language === "TE" ? "కావ్య & తేజస్" : <>Kavya <span>&</span> Tejas</>}</h1><GoldLine /><p className="lux-hero-date">27 · 08 · 2026</p><p className="lux-hero-sub">{language === "TE" ? "మా కొత్త ప్రయాణానికి మిమ్మల్ని ఆహ్వానిస్తున్నాము." : "invite you to witness the beginning of forever."}</p></div><a href="#story" className="lux-scroll"><span>SCROLL TO ENTER</span></a></section>
+      <ScratchDateReveal />
       <section id="story" className="lux-story lux-paper"><div className="lux-section-number">01</div><Reveal className="lux-story-inner"><p className="lux-micro gold">THE BEGINNING</p><h2>Two lives.<br /><em>One beautiful promise.</em></h2><p className="lux-lead">With hearts full of gratitude and joy, we invite you to be part of the moments that bring our families together and begin our next chapter.</p><div className="lux-signature"><span>K</span><span>&</span><span>T</span></div><p className="lux-caption">Together with our families</p></Reveal></section>
       <LuxuryCountdown />
       <OccasionsSection />
