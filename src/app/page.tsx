@@ -39,6 +39,58 @@ export default function Page() {
       <CinematicGallery />
       <section id="venue" className="lux-venue lux-paper"><div className="lux-section-number">05</div><Reveal className="lux-venue-grid"><div><p className="lux-micro gold">THE DESTINATION</p><h2>Ishaar<br /><em>Staycation</em></h2><p className="lux-address">Chirravuru, Andhra Pradesh 522303<br />India</p><a className="lux-map" href={weddingConfig.wedding.mapsUrl} target="_blank" rel="noreferrer"><MapPin size={15} /> OPEN IN MAPS <ArrowUpRight size={14} /></a></div><div className="lux-venue-card"><div className="lux-venue-card-top"><CalendarDays size={18} /><span>THURSDAY</span></div><strong>27</strong><span>AUGUST</span><span>2026</span><GoldLine /><small>ALL OCCASIONS · ONE PLACE</small></div></Reveal></section>
       <section id="rsvp" className="lux-final"><div className="lux-final-glow" /><Reveal className="lux-final-copy"><p className="lux-micro gold">WITH LOVE</p><h2>Kavya <span>&</span> Tejas</h2><p>We would be honoured to have you with us<br />as we begin this new journey.</p><GoldLine /><p className="lux-final-date">27 · 08 · 2026</p><button className="lux-rsvp">RSVP WITH US</button></Reveal><footer>MADE WITH LOVE · KAVYA & TEJAS · 2026</footer></section>
+      <style jsx global>{`
+        :root{--gold:#d8b56a;--gold-bright:#f0d58e;--muted:#a69d8e;--paper:#f6f0e5}
+        .lux-micro{font-size:.68rem!important;letter-spacing:.22em!important;color:#c8c0b3}
+        .gold{color:#d8b56a!important}
+        .lux-nav{height:74px;background:linear-gradient(#070706,rgba(7,7,6,.88),transparent);padding-inline:clamp(16px,4vw,60px)}
+        .lux-nav-links{gap:clamp(16px,2.5vw,30px);font-size:.64rem;color:#d0c9bd}
+        .lux-nav-actions{font-size:.66rem;color:#e0bd70}
+        .lux-hero-copy h1{color:#fff5df;text-shadow:0 4px 30px rgba(0,0,0,.55)}
+        .lux-hero-date{font-size:.78rem;color:#f0d58e;letter-spacing:.34em}
+        .lux-hero-sub{color:#eee5d6;font-size:1.1rem;text-shadow:0 2px 14px #000}
+        .lux-scroll{font-size:.58rem;color:#ddd4c5}
+        .lux-section-number{font-size:.64rem;color:#a49b8c}
+        .lux-story h2,.lux-section-heading h2,.lux-venue h2{color:#201d18}
+        .lux-story h2 em,.lux-section-heading h2 em,.lux-venue h2 em{color:#9a702c}
+        .lux-lead{color:#5e584e;font-size:1.2rem}
+        .lux-caption{font-size:.58rem;color:#756e63}
+        .lux-event-index,.occasion-index,.occasion-date{color:#f0d58e!important}
+        .lux-event-time{font-size:.72rem;color:#f0d58e}
+        .lux-event-venue{color:#b7afa2;font-size:1.05rem}
+        .occasion-label{font-size:.58rem!important;color:#bdb3a3!important}
+        .occasion-details p{color:#aaa093!important;font-size:1.03rem!important}
+        .occasion-details small{font-size:.62rem!important;color:#898073!important}
+        .lux-statement .lux-micro,.lux-statement .lux-month{color:#f0d58e}
+        .lux-statement-line{color:#eee5d7;font-size:1.45rem}
+        .lux-address{color:#5f594f;font-size:1.12rem}
+        .lux-map{font-size:.62rem;color:#8d672c;border-color:rgba(141,103,44,.55)}
+        .lux-venue-card-top,.lux-venue-card>span{color:#8d672c;font-size:.64rem}
+        .lux-venue-card small{font-size:.5rem;color:#81786c}
+        .lux-final-copy>p:not(.lux-micro):not(.lux-final-date){color:#c5bdb0;font-size:1.18rem}
+        .lux-final-date{font-size:.7rem;color:#f0d58e}
+        .lux-rsvp{font-size:.62rem;color:#f0d58e}
+        .lux-final footer{font-size:.5rem;color:#777064}
+        .scratch-date-inner h2{color:#fff0d1!important}
+        .scratch-lead{color:#aaa092!important;font-size:1rem!important}
+        .scratch-date-underlay{color:#f5dfaa!important}
+        .scratch-date-underlay span{font-size:.6rem!important;color:#f2dca5!important}
+        .scratch-date-underlay i{font-size:.52rem!important;color:#c1a875!important}
+        .scratch-accessible{font-size:.58rem!important;color:#f0d58e!important;border-color:rgba(240,213,142,.65)!important}
+        .scratch-result span{font-size:.58rem!important;color:#c6b68f!important}
+        .scratch-result i{color:#c3a66f!important}
+        @media(max-width:760px){
+          .lux-nav{height:64px}.lux-nav-links{display:none}.lux-nav-mark{font-size:1.8rem}.lux-nav-actions{gap:14px;font-size:.72rem}
+          .lux-micro{font-size:.62rem!important;letter-spacing:.18em!important}
+          .lux-hero-copy h1{font-size:clamp(3.7rem,14vw,6rem)}
+          .lux-hero-date{font-size:.72rem;letter-spacing:.25em}.lux-hero-sub{font-size:1rem;padding-inline:22px}
+          .lux-scroll{font-size:.54rem;bottom:24px}
+          .lux-lead{font-size:1.05rem;line-height:1.8}
+          .lux-story h2,.lux-section-heading h2,.lux-venue h2{font-size:clamp(3rem,12vw,4.7rem)}
+          .lux-address{font-size:1rem}.lux-final-copy>p:not(.lux-micro):not(.lux-final-date){font-size:1.05rem}
+          .scratch-date-underlay span{font-size:.52rem!important}.scratch-date-underlay i{font-size:.45rem!important}.scratch-lead{font-size:.95rem!important}
+        }
+      `}</style>
     </main>}
   </div>;
 }
