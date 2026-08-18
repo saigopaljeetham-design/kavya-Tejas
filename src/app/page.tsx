@@ -2,8 +2,9 @@
 
 import Image from "next/image";
 import { useEffect, useRef, useState, type ReactNode } from "react";
-import { ArrowDown, ArrowUpRight, CalendarDays, MapPin, Play, Volume2, VolumeX } from "lucide-react";
+import { ArrowDown, ArrowUpRight, CalendarDays, MapPin, Volume2, VolumeX } from "lucide-react";
 import { weddingConfig } from "@/config/wedding";
+import { PremiumAtmosphere } from "@/components/invitation/PremiumAtmosphere";
 
 const events = weddingConfig.wedding.events;
 function GoldLine() { return <span className="lux-line" aria-hidden="true" />; }
@@ -18,6 +19,7 @@ export default function Page() {
   const toggleMusic = async () => { const audio = audioRef.current; if (!audio) return; if (music) { audio.pause(); setMusic(false); } else { try { await audio.play(); setMusic(true); } catch { setMusic(false); } } };
 
   return <div className="luxury-invitation">
+    <PremiumAtmosphere />
     <audio ref={audioRef} loop preload="none" src={weddingConfig.music.source} />
     {!opened && <section className="lux-cover" onClick={() => setOpened(true)} aria-label="Open wedding invitation">
       <div className="lux-cover-glow" /><div className="lux-cover-inner"><p className="lux-micro">A WEDDING INVITATION · 27 AUGUST 2026</p><GoldLine /><div className="lux-monogram">K<span>&</span>T</div><p className="lux-cover-names">Kavya <i>and</i> Tejas</p><p className="lux-cover-place">Vijayawada · Andhra Pradesh</p><button className="lux-open" onClick={(e) => { e.stopPropagation(); setOpened(true); }}><span>OPEN INVITATION</span><ArrowDown size={14} /></button></div><div className="lux-cover-corner top-left" /><div className="lux-cover-corner bottom-right" />
@@ -36,7 +38,7 @@ export default function Page() {
 
       <section id="venue" className="lux-venue lux-paper"><div className="lux-section-number">03</div><Reveal className="lux-venue-grid"><div><p className="lux-micro gold">THE DESTINATION</p><h2>Ishaar<br /><em>Staycation</em></h2><p className="lux-address">Chirravuru, Andhra Pradesh 522303<br />India</p><a className="lux-map" href={weddingConfig.wedding.mapsUrl} target="_blank" rel="noreferrer"><MapPin size={15} /> OPEN IN MAPS <ArrowUpRight size={14} /></a></div><div className="lux-venue-card"><div className="lux-venue-card-top"><CalendarDays size={18} /><span>THURSDAY</span></div><strong>27</strong><span>AUGUST</span><span>2026</span><GoldLine /><small>ALL CELEBRATIONS · ONE PLACE</small></div></Reveal></section>
 
-      <section id="rsvp" className="lux-final"><div className="lux-final-glow" /><Reveal className="lux-final-copy"><p className="lux-micro gold">WITH LOVE</p><h2>Kavya <span>&</span> Tejas</h2><p>We would be honoured to have you with us<br />as we begin this new journey.</p><GoldLine /><p className="lux-final-date">27 · 08 · 2026</p><button className="lux-rsvp"><Play size={13} fill="currentColor" /> RSVP WITH US</button></Reveal><footer>MADE WITH LOVE · KAVYA & TEJAS · 2026</footer></section>
+      <section id="rsvp" className="lux-final"><div className="lux-final-glow" /><Reveal className="lux-final-copy"><p className="lux-micro gold">WITH LOVE</p><h2>Kavya <span>&</span> Tejas</h2><p>We would be honoured to have you with us<br />as we begin this new journey.</p><GoldLine /><p className="lux-final-date">27 · 08 · 2026</p><button className="lux-rsvp">RSVP WITH US</button></Reveal><footer>MADE WITH LOVE · KAVYA & TEJAS · 2026</footer></section>
     </main>}
   </div>;
 }
