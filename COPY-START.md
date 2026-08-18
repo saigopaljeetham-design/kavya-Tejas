@@ -1,1 +1,0 @@
-Copying the current Kavya & Tejas wedding invitation repository into Project-2.
