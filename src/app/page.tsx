@@ -2,12 +2,13 @@
 
 import Image from "next/image";
 import { useEffect, useRef, useState, type ReactNode } from "react";
-import { ArrowDown, ArrowUpRight, CalendarDays, MapPin, Volume2, VolumeX } from "lucide-react";
+import { ArrowUpRight, CalendarDays, MapPin, Volume2, VolumeX } from "lucide-react";
 import { weddingConfig } from "@/config/wedding";
 import { PremiumAtmosphere } from "@/components/invitation/PremiumAtmosphere";
 import { LuxuryCountdown } from "@/components/invitation/LuxuryCountdown";
 import { MandapScene } from "@/components/invitation/MandapScene";
 import { CinematicGallery } from "@/components/invitation/CinematicGallery";
+import { CinematicEnvelope } from "@/components/invitation/CinematicEnvelope";
 
 const events = weddingConfig.wedding.events;
 function GoldLine() { return <span className="lux-line" aria-hidden="true" />; }
@@ -24,17 +25,11 @@ export default function Page() {
   return <div className="luxury-invitation">
     <PremiumAtmosphere />
     <audio ref={audioRef} loop preload="none" src={weddingConfig.music.source} />
-    {!opened && <section className="lux-cover" onClick={() => setOpened(true)} aria-label="Open wedding invitation">
-      <div className="lux-cover-glow" /><div className="lux-cover-inner"><p className="lux-micro">A WEDDING INVITATION · 27 AUGUST 2026</p><GoldLine /><div className="lux-monogram">K<span>&</span>T</div><p className="lux-cover-names">Kavya <i>and</i> Tejas</p><p className="lux-cover-place">Vijayawada · Andhra Pradesh</p><button className="lux-open" onClick={(e) => { e.stopPropagation(); setOpened(true); }}><span>OPEN INVITATION</span><ArrowDown size={14} /></button></div><div className="lux-cover-corner top-left" /><div className="lux-cover-corner bottom-right" />
-    </section>}
-
+    {!opened && <CinematicEnvelope onOpen={() => setOpened(true)} />}
     {opened && <main>
       <nav className="lux-nav"><a href="#top" className="lux-nav-mark">K<span>&</span>T</a><div className="lux-nav-links"><a href="#celebrations">Celebrations</a><a href="#muhurtham">Muhurtham</a><a href="#gallery">Gallery</a><a href="#venue">Venue</a></div><div className="lux-nav-actions"><button aria-label="Switch language" onClick={() => setLanguage(language === "EN" ? "TE" : "EN")}>{language}</button><button aria-label="Toggle music" onClick={toggleMusic}>{music ? <Volume2 size={16} /> : <VolumeX size={16} />}</button></div></nav>
-
-      <section id="top" className="lux-hero"><div className="lux-hero-image"><Image src={weddingConfig.couplePhoto} alt="Kavya and Tejas" fill priority sizes="100vw" className="object-cover" /></div><div className="lux-hero-overlay" /><div className="lux-hero-copy"><p className="lux-micro">WITH THE BLESSINGS OF OUR FAMILIES</p><h1>{language === "TE" ? "కావ్య & తేజస్" : <>Kavya <span>&</span> Tejas</>}</h1><GoldLine /><p className="lux-hero-date">27 · 08 · 2026</p><p className="lux-hero-sub">{language === "TE" ? "మా కొత్త ప్రయాణానికి మిమ్మల్ని ఆహ్వానిస్తున్నాము." : "invite you to witness the beginning of forever."}</p></div><a href="#story" className="lux-scroll"><span>SCROLL TO ENTER</span><ArrowDown size={14} /></a></section>
-
+      <section id="top" className="lux-hero"><div className="lux-hero-image"><Image src={weddingConfig.couplePhoto} alt="Kavya and Tejas" fill priority sizes="100vw" className="object-cover" /></div><div className="lux-hero-overlay" /><div className="lux-hero-copy"><p className="lux-micro">WITH THE BLESSINGS OF OUR FAMILIES</p><h1>{language === "TE" ? "కావ్య & తేజస్" : <>Kavya <span>&</span> Tejas</>}</h1><GoldLine /><p className="lux-hero-date">27 · 08 · 2026</p><p className="lux-hero-sub">{language === "TE" ? "మా కొత్త ప్రయాణానికి మిమ్మల్ని ఆహ్వానిస్తున్నాము." : "invite you to witness the beginning of forever."}</p></div><a href="#story" className="lux-scroll"><span>SCROLL TO ENTER</span></a></section>
       <section id="story" className="lux-story lux-paper"><div className="lux-section-number">01</div><Reveal className="lux-story-inner"><p className="lux-micro gold">THE BEGINNING</p><h2>Two lives.<br /><em>One beautiful promise.</em></h2><p className="lux-lead">With hearts full of gratitude and joy, we invite you to be part of the moments that bring our families together and begin our next chapter.</p><div className="lux-signature"><span>K</span><span>&</span><span>T</span></div><p className="lux-caption">Together with our families</p></Reveal></section>
-
       <LuxuryCountdown />
       <section id="celebrations" className="lux-celebrations"><div className="lux-section-number light">02</div><div className="lux-section-heading"><p className="lux-micro gold">THE CELEBRATIONS</p><h2>One day.<br /><em>Three chapters.</em></h2></div><div className="lux-events">{events.map((event, index) => <Reveal key={event.key} className={`lux-event lux-event-${index + 1}`}><div className="lux-event-art"><Image src={event.plates[0]} alt={event.name} fill sizes="(max-width: 768px) 92vw, 42vw" className="object-cover" /><div className="lux-art-shade" /><span className="lux-event-index">0{index + 1}</span></div><div className="lux-event-copy"><p className="lux-micro gold">{event.dayName} · {event.dateLabel}</p><h3>{event.name}</h3><p className="lux-event-time">{event.time}</p><p className="lux-event-venue">{event.venue}</p></div></Reveal>)}</div></section>
       <section id="muhurtham"><MandapScene /></section>
