@@ -1,284 +1,57 @@
 @import "tailwindcss";
 
-/*
-  Design tokens sampled from the reference invitation video:
-  ivory paper, antique gold foil, warm brown ink, and the near-black
-  ground used behind the couple portraits.
-*/
 @theme {
-  --color-ivory: #f8f3e8;
-  --color-cream: #efe4cf;
-  --color-paper: #fbf7ee;
-  --color-paper-warm: #f4ead8;
-  --color-gold: #b08a45;
-  --color-gold-light: #d7bd7b;
-  --color-gold-deep: #8a6a2f;
-  --color-brown: #4a3425;
-  --color-ink: #3b2a1e;
-  --color-ink-soft: #6b5847;
-  --color-night: #170d08;
-  --color-night-soft: #241610;
-  --color-leaf: #5c6b4a;
-
-  --font-display: var(--font-cormorant), "Cormorant Garamond", Georgia, serif;
-  --font-body: var(--font-cormorant), "Cormorant Garamond", Georgia, serif;
-  --font-label: var(--font-jost), "Jost", system-ui, sans-serif;
-  --font-kannada: var(--font-kannada), "Noto Sans Kannada", system-ui, sans-serif;
+  --font-display: var(--font-cormorant), Georgia, serif;
+  --font-body: var(--font-cormorant), Georgia, serif;
+  --font-label: var(--font-jost), Arial, sans-serif;
+  --color-gold: #c9a45b;
 }
 
-:root {
-  --gold: #b08a45;
-  --gold-light: #d7bd7b;
-  --ivory: #f8f3e8;
-  --cream: #efe4cf;
-  --brown: #4a3425;
-  --paper: #fbf7ee;
-  --shadow: 0 24px 60px -28px rgba(58, 38, 18, 0.45);
-  --shadow-card: 0 18px 44px -22px rgba(58, 38, 18, 0.38);
-  --shadow-print: 0 14px 30px -14px rgba(40, 26, 14, 0.4);
-}
+:root { --black:#080807; --ink:#151411; --paper:#f3eee4; --gold:#c9a45b; --gold-bright:#e3c57f; --muted:#8f897d; }
+* { box-sizing:border-box; }
+html { scroll-behavior:smooth; background:var(--black); }
+body { margin:0; background:var(--black); color:#f4efe5; font-family:var(--font-body); -webkit-font-smoothing:antialiased; }
+button,a { font:inherit; }
+a { color:inherit; text-decoration:none; }
+button { border:0; background:none; color:inherit; cursor:pointer; }
 
-html {
-  scroll-behavior: smooth;
-  -webkit-text-size-adjust: 100%;
-}
+.luxury-invitation { min-height:100svh; overflow:hidden; background:var(--black); }
+.lux-paper { background:var(--paper); color:var(--ink); }
+.lux-micro { font-family:var(--font-label); font-size:.57rem; letter-spacing:.28em; text-transform:uppercase; font-weight:500; }
+.gold { color:var(--gold); }
+.lux-line { display:block; width:76px; height:1px; margin:18px auto; background:linear-gradient(90deg,transparent,var(--gold-bright),transparent); }
 
-body {
-  background-color: var(--ivory);
-  color: #3b2a1e;
-  font-family: var(--font-body);
-  -webkit-font-smoothing: antialiased;
-  overflow-x: hidden;
-}
+.lux-cover { position:fixed; inset:0; z-index:100; display:grid; place-items:center; background:#090908; cursor:pointer; isolation:isolate; }
+.lux-cover::before { content:""; position:absolute; inset:8%; border:1px solid rgba(201,164,91,.24); }
+.lux-cover-glow { position:absolute; width:55vw; height:55vw; border-radius:50%; background:radial-gradient(circle,rgba(201,164,91,.13),transparent 65%); filter:blur(30px); }
+.lux-cover-inner { position:relative; z-index:2; width:min(86vw,620px); text-align:center; animation:luxIn 1.5s ease both; }
+.lux-monogram { margin:34px 0 12px; font-family:var(--font-display); font-size:clamp(6rem,20vw,12rem); line-height:.72; font-weight:300; letter-spacing:-.08em; color:#e7d3a7; }
+.lux-monogram span,.lux-nav-mark span { font-size:.32em; color:var(--gold); vertical-align:middle; margin:0 .05em; }
+.lux-cover-names { margin:0; font-size:clamp(1.6rem,4vw,2.5rem); letter-spacing:.04em; }
+.lux-cover-names i { font-size:.55em; color:var(--gold); margin:0 .25em; }
+.lux-cover-place { margin:18px 0 38px; font-family:var(--font-label); font-size:.58rem; letter-spacing:.28em; text-transform:uppercase; color:#8f897d; }
+.lux-open { display:inline-flex; align-items:center; gap:12px; padding:13px 22px; border:1px solid rgba(201,164,91,.5); font-family:var(--font-label); font-size:.55rem; letter-spacing:.2em; color:#e3c57f; transition:.35s; }
+.lux-open:hover { background:var(--gold); color:#111; }
+.lux-cover-corner { position:absolute; width:70px; height:70px; border-color:rgba(201,164,91,.35); border-style:solid; }
+.lux-cover-corner.top-left { top:14%; left:8%; border-width:1px 0 0 1px; }.lux-cover-corner.bottom-right { right:8%; bottom:14%; border-width:0 1px 1px 0; }
 
-/* Locks scrolling while the envelope is still sealed. */
-body[data-sealed="true"] {
-  overflow: hidden;
-}
+.lux-nav { position:fixed; z-index:50; top:0; left:0; right:0; height:70px; display:flex; align-items:center; justify-content:space-between; padding:0 clamp(20px,4vw,60px); background:linear-gradient(#080807,rgba(8,8,7,.6),transparent); font-family:var(--font-label); }
+.lux-nav-mark { font-family:var(--font-display); font-size:1.65rem; }.lux-nav-links { display:flex; gap:30px; font-size:.52rem; letter-spacing:.18em; text-transform:uppercase; color:#aaa398; }.lux-nav-links a:hover{color:var(--gold-bright)}.lux-nav-actions{display:flex;gap:16px;color:#c9a45b;font-size:.58rem;letter-spacing:.12em}
 
-/* ------------------------------------------------------------ typography */
-.label-caps {
-  font-family: var(--font-label);
-  text-transform: uppercase;
-  letter-spacing: 0.32em;
-  font-weight: 400;
-}
+.lux-hero { position:relative; height:100svh; min-height:650px; display:grid; place-items:center; overflow:hidden; }
+.lux-hero-image,.lux-statement-image { position:absolute; inset:0; }.lux-hero-image img { filter:saturate(.72) contrast(1.05); transform:scale(1.04); }.lux-hero-overlay { position:absolute; inset:0; background:linear-gradient(180deg,rgba(0,0,0,.48),rgba(0,0,0,.12) 42%,rgba(0,0,0,.84)); }
+.lux-hero-copy { position:relative; z-index:2; text-align:center; margin-top:6vh; animation:luxIn 1.6s .25s ease both; }.lux-hero-copy h1 { margin:22px 0 10px; font-size:clamp(4.3rem,12vw,9.5rem); font-weight:300; line-height:.84; letter-spacing:-.045em; }.lux-hero-copy h1 span,.lux-final h2 span{font-size:.45em;color:var(--gold);font-style:italic}.lux-hero-date{font-family:var(--font-label);font-size:.68rem;letter-spacing:.42em;margin:26px 0 12px;color:#e3c57f}.lux-hero-sub{font-size:1.05rem;font-style:italic;color:#d2ccc0}.lux-scroll{position:absolute;z-index:3;bottom:28px;left:50%;transform:translateX(-50%);display:flex;flex-direction:column;align-items:center;gap:8px;font-family:var(--font-label);font-size:.48rem;letter-spacing:.25em;color:#aaa398}
 
-.display-name {
-  font-family: var(--font-display);
-  font-weight: 300;
-  letter-spacing: 0.01em;
-  line-height: 1.05;
-}
+.lux-story { position:relative; min-height:88svh; display:grid; place-items:center; padding:120px 24px; }.lux-section-number { position:absolute; left:clamp(20px,5vw,70px); top:80px; font-family:var(--font-label); font-size:.55rem; letter-spacing:.25em; color:#8f897d; }.lux-story-inner{text-align:center;max-width:720px}.lux-story h2,.lux-section-heading h2,.lux-venue h2{font-size:clamp(3.4rem,7vw,6.4rem);font-weight:300;line-height:.88;letter-spacing:-.04em;margin:28px 0}.lux-story h2 em,.lux-section-heading h2 em,.lux-venue h2 em{font-style:italic;color:#8e6b31}.lux-lead{max-width:570px;margin:35px auto 45px;font-size:1.15rem;line-height:1.9;color:#6d665b}.lux-signature{font-family:var(--font-display);font-size:2rem;color:var(--gold);display:flex;justify-content:center;gap:12px}.lux-signature span:nth-child(2){font-size:1rem}.lux-caption{font-family:var(--font-label);font-size:.48rem;letter-spacing:.22em;text-transform:uppercase;color:#999184}
 
-[lang="kn"] .label-caps {
-  letter-spacing: 0.12em;
-}
+.lux-celebrations { position:relative; padding:120px clamp(20px,6vw,90px) 150px; background:#0b0b09; }.lux-section-number.light{color:#756e61}.lux-section-heading{max-width:700px;margin:0 auto 90px;text-align:center}.lux-section-heading h2{color:#f0e9dd;margin-bottom:0}.lux-events{max-width:1100px;margin:auto;display:grid;grid-template-columns:1fr 1fr;gap:110px 8vw}.lux-event{display:grid;grid-template-columns:1fr;gap:25px}.lux-event-2{margin-top:130px}.lux-event-3{grid-column:1/-1;max-width:760px;margin:0 auto}.lux-event-art{position:relative;aspect-ratio:4/5;overflow:hidden;border:1px solid rgba(201,164,91,.25)}.lux-event-art img{filter:saturate(.68);transition:transform 1.2s ease}.lux-event:hover img{transform:scale(1.04)}.lux-art-shade{position:absolute;inset:0;background:linear-gradient(180deg,transparent 50%,rgba(0,0,0,.55))}.lux-event-index{position:absolute;top:18px;right:18px;font-family:var(--font-label);font-size:.52rem;letter-spacing:.2em;color:#e3c57f}.lux-event-copy{text-align:center}.lux-event-copy h3{font-size:3.2rem;font-weight:300;margin:13px 0 0}.lux-event-time{font-family:var(--font-label);font-size:.65rem;letter-spacing:.3em;color:#e3c57f;margin:13px 0}.lux-event-venue{font-size:1rem;color:#8f897d}.lux-reveal{animation:luxRise .9s ease both}
 
-/* --------------------------------------------------------------- surfaces */
-/* Woven paper grain - two hairline gradients rather than a bitmap, so it
-   costs nothing to download and never blurs on a dense phone screen. */
-.paper {
-  background-color: var(--paper);
-  background-image:
-    repeating-linear-gradient(
-      0deg,
-      rgba(176, 138, 69, 0.028) 0px,
-      rgba(176, 138, 69, 0.028) 1px,
-      transparent 1px,
-      transparent 3px
-    ),
-    repeating-linear-gradient(
-      90deg,
-      rgba(176, 138, 69, 0.028) 0px,
-      rgba(176, 138, 69, 0.028) 1px,
-      transparent 1px,
-      transparent 3px
-    );
-}
+.lux-statement{height:82svh;min-height:580px;position:relative;display:grid;place-items:center;overflow:hidden}.lux-statement-image img{filter:grayscale(.1) saturate(.55);transform:scale(1.05)}.lux-statement-overlay{position:absolute;inset:0;background:linear-gradient(90deg,rgba(7,7,6,.8),rgba(7,7,6,.28),rgba(7,7,6,.78))}.lux-statement-copy{position:relative;text-align:center}.lux-big-date{font-family:var(--font-display);font-size:clamp(8rem,24vw,17rem);font-weight:300;line-height:.72;margin:28px 0 4px;color:#f1dfb5}.lux-big-date sup{font-family:var(--font-label);font-size:.1em;letter-spacing:.1em}.lux-month{font-family:var(--font-label);font-size:.7rem;letter-spacing:.5em;color:#d6c5a0}.lux-statement-line{font-size:1.35rem;line-height:1.6;color:#d5cfc3}.lux-statement-line em{color:#e3c57f}
 
-.gold-rule {
-  background: linear-gradient(
-    90deg,
-    transparent,
-    var(--gold-light) 18%,
-    var(--gold) 50%,
-    var(--gold-light) 82%,
-    transparent
-  );
-}
+.lux-venue{position:relative;padding:140px clamp(24px,8vw,120px)}.lux-venue-grid{max-width:1050px;margin:auto;display:grid;grid-template-columns:1.3fr .7fr;align-items:center;gap:10vw}.lux-address{font-size:1.1rem;line-height:1.8;color:#777064}.lux-map{display:inline-flex;align-items:center;gap:9px;margin-top:30px;padding:12px 18px;border:1px solid rgba(142,107,49,.45);font-family:var(--font-label);font-size:.52rem;letter-spacing:.18em;color:#8e6b31}.lux-venue-card{justify-self:end;width:min(100%,300px);aspect-ratio:1/1.25;border:1px solid rgba(142,107,49,.35);display:flex;flex-direction:column;align-items:center;justify-content:center;background:rgba(255,255,255,.22);box-shadow:0 25px 70px rgba(70,50,20,.12)}.lux-venue-card-top{display:flex;align-items:center;gap:8px;font-family:var(--font-label);font-size:.52rem;letter-spacing:.22em;color:#8e6b31}.lux-venue-card strong{font-family:var(--font-display);font-size:7rem;font-weight:300;line-height:.8;margin:25px 0 8px}.lux-venue-card>span{font-family:var(--font-label);font-size:.58rem;letter-spacing:.32em;color:#777064}.lux-venue-card small{font-family:var(--font-label);font-size:.43rem;letter-spacing:.15em;color:#999184}
 
-.gold-text {
-  background: linear-gradient(100deg, #8a6a2f 0%, #d7bd7b 42%, #b08a45 62%, #8a6a2f 100%);
-  -webkit-background-clip: text;
-  background-clip: text;
-  -webkit-text-fill-color: transparent;
-  color: var(--gold);
-}
+.lux-final{min-height:100svh;position:relative;display:grid;place-items:center;padding:100px 20px 60px;text-align:center;background:#090908;overflow:hidden}.lux-final-glow{position:absolute;width:70vw;height:70vw;border-radius:50%;background:radial-gradient(circle,rgba(201,164,91,.12),transparent 67%)}.lux-final-copy{position:relative}.lux-final h2{font-size:clamp(4rem,10vw,8rem);font-weight:300;line-height:.9;margin:24px 0}.lux-final-copy>p:not(.lux-micro):not(.lux-final-date){font-size:1.12rem;line-height:1.8;color:#a49d90}.lux-final-date{font-family:var(--font-label);font-size:.62rem;letter-spacing:.42em;color:#e3c57f}.lux-rsvp{display:inline-flex;align-items:center;gap:9px;margin-top:28px;padding:13px 21px;border:1px solid rgba(201,164,91,.5);font-family:var(--font-label);font-size:.52rem;letter-spacing:.2em;color:#e3c57f}.lux-final footer{position:absolute;bottom:25px;font-family:var(--font-label);font-size:.42rem;letter-spacing:.22em;color:#59544c}
 
-@supports not ((-webkit-background-clip: text) or (background-clip: text)) {
-  .gold-text {
-    -webkit-text-fill-color: currentColor;
-  }
-}
-
-/* Warm light bloom behind the hero and final scenes. */
-.warm-bloom {
-  background:
-    radial-gradient(120% 70% at 50% 8%, rgba(255, 236, 196, 0.85) 0%, transparent 62%),
-    radial-gradient(90% 60% at 50% 100%, rgba(214, 178, 116, 0.35) 0%, transparent 70%),
-    linear-gradient(180deg, #f6ecd9 0%, #f2e5cd 45%, #eddcc0 100%);
-}
-
-.night-bloom {
-  background:
-    radial-gradient(70% 50% at 50% 0%, rgba(176, 138, 69, 0.22) 0%, transparent 60%),
-    radial-gradient(60% 40% at 50% 100%, rgba(176, 138, 69, 0.14) 0%, transparent 65%),
-    linear-gradient(180deg, #170d08 0%, #241610 50%, #170d08 100%);
-}
-
-/* Card edge treatment used on the printed cards in the video. */
-.foil-frame {
-  position: relative;
-  box-shadow: var(--shadow-card);
-}
-
-.foil-frame::after {
-  content: "";
-  position: absolute;
-  inset: 0.55rem;
-  border: 1px solid rgba(176, 138, 69, 0.45);
-  border-radius: inherit;
-  pointer-events: none;
-}
-
-/* Printed photographs only fan out once there is room for them; on a phone
-   they stack straight so nothing is pushed under the edge of the screen. */
-.print-offset {
-  transform: none;
-}
-
-@media (min-width: 768px) {
-  .print-offset {
-    transform: translate(var(--dx, 0px), var(--dy, 0px));
-  }
-}
-
-/* One photographic ground shared by every scene: the reference set, tinted
-   back almost to parchment so type stays legible but the warmth and grain of
-   the real silk and lamplight come through. */
-.parchment-scene {
-  background-image:
-    linear-gradient(rgba(249, 243, 231, 0.945), rgba(242, 231, 211, 0.955)),
-    url("/images/envelope/seq-05.jpg");
-  background-size: cover, cover;
-  background-position: center, center;
-  background-repeat: no-repeat, no-repeat;
-}
-
-.night-scene {
-  background-image:
-    linear-gradient(rgba(21, 12, 6, 0.90), rgba(27, 16, 8, 0.94)),
-    url("/images/envelope/seq-05.jpg");
-  background-size: cover, cover;
-  background-position: center, center;
-  background-repeat: no-repeat, no-repeat;
-}
-
-/* --------------------------------------------------------------- motion */
-@keyframes flicker {
-  0%, 100% { opacity: 1; transform: scaleY(1); }
-  35% { opacity: 0.82; transform: scaleY(0.94) translateY(0.5px); }
-  60% { opacity: 0.95; transform: scaleY(1.03); }
-  80% { opacity: 0.86; transform: scaleY(0.97); }
-}
-
-.flame {
-  transform-origin: 50% 100%;
-  animation: flicker 2.4s ease-in-out infinite;
-}
-
-@keyframes drift {
-  0% { transform: translate3d(0, 0, 0); opacity: 0; }
-  12% { opacity: 0.7; }
-  88% { opacity: 0.55; }
-  100% { transform: translate3d(14px, -120px, 0); opacity: 0; }
-}
-
-.mote {
-  animation: drift linear infinite;
-  will-change: transform, opacity;
-}
-
-/* The mote gradients live here rather than in inline styles: the browser
-   rewrites an inline `background` shorthand into longhands, which no longer
-   matches what React wrote and trips hydration. */
-.mote-gold {
-  background-image: radial-gradient(
-    circle,
-    rgba(255, 236, 190, 0.95) 0%,
-    rgba(214, 178, 116, 0.5) 55%,
-    transparent 70%
-  );
-}
-
-.mote-light {
-  background-image: radial-gradient(
-    circle,
-    rgba(255, 255, 255, 0.9) 0%,
-    rgba(255, 240, 214, 0.4) 55%,
-    transparent 70%
-  );
-}
-
-@keyframes sway {
-  0%, 100% { transform: rotate(-1.6deg); }
-  50% { transform: rotate(1.6deg); }
-}
-
-.sway {
-  transform-origin: 50% 0%;
-  animation: sway 6s ease-in-out infinite;
-}
-
-/* Shafts of light turning behind a ceremony scene. Very slow — it should read
-   as the light shifting in a room, never as something spinning. The wrapper
-   does the positioning so this element is free to own its transform. */
-@keyframes raysturn {
-  from { transform: rotate(0deg); }
-  to { transform: rotate(360deg); }
-}
-
-.rays {
-  transform-origin: 50% 30%;
-  animation: raysturn 140s linear infinite;
-}
-
-/* Focus ring that reads on both the ivory and night grounds. */
-:where(a, button, [tabindex]):focus-visible {
-  outline: 2px solid var(--gold);
-  outline-offset: 3px;
-  border-radius: 2px;
-}
-
-/* --------------------------------------------------- reduced motion */
-@media (prefers-reduced-motion: reduce) {
-  html {
-    scroll-behavior: auto;
-  }
-
-  .flame,
-  .mote,
-  .sway,
-  .rays {
-    animation: none !important;
-  }
-
-  *,
-  *::before,
-  *::after {
-    animation-duration: 0.001ms !important;
-    animation-iteration-count: 1 !important;
-    transition-duration: 0.001ms !important;
-  }
-}
+@keyframes luxIn{from{opacity:0;transform:translateY(18px)}to{opacity:1;transform:none}}@keyframes luxRise{from{opacity:0;transform:translateY(25px)}to{opacity:1;transform:none}}
+@media(max-width:700px){.lux-nav{height:58px}.lux-nav-links{display:none}.lux-hero-copy h1{font-size:4.6rem}.lux-events{grid-template-columns:1fr;gap:70px}.lux-event-2,.lux-event-3{margin-top:0;grid-column:auto;max-width:none}.lux-event-art{aspect-ratio:4/5}.lux-venue-grid{grid-template-columns:1fr;gap:60px}.lux-venue-card{justify-self:center}.lux-story,.lux-venue{padding-top:110px;padding-bottom:110px}.lux-statement{height:76svh}.lux-big-date{font-size:8rem}.lux-cover::before{inset:4%}}
+@media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}.lux-reveal,.lux-cover-inner{animation:none}}
