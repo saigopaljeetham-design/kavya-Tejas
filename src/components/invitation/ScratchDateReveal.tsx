@@ -61,7 +61,6 @@ export function ScratchDateReveal() {
     ctx.textBaseline = "middle";
     ctx.fillStyle = "rgba(33,23,10,.82)";
     ctx.font = `600 ${Math.max(10, Math.min(13, rect.width / 38))}px Arial`;
-    ctx.letterSpacing = "3px";
     ctx.fillText("SCRATCH TO REVEAL", rect.width / 2, rect.height * .42);
     ctx.font = `400 ${Math.max(8, Math.min(10, rect.width / 48))}px Arial`;
     ctx.fillStyle = "rgba(49,34,14,.65)";
@@ -83,9 +82,9 @@ export function ScratchDateReveal() {
     const canvas = canvasRef.current;
     const ctx = canvas?.getContext("2d");
     if (!canvas || !ctx) return;
+    const pixels = ctx.getImageData(0, 0, canvas.width, canvas.height).data;
     const sampleW = 72;
     const sampleH = 72;
-    const pixels = ctx.getImageData(0, 0, canvas.width, canvas.height, 0, 0).data;
     const stepX = Math.max(1, Math.floor(canvas.width / sampleW));
     const stepY = Math.max(1, Math.floor(canvas.height / sampleH));
     let total = 0;
