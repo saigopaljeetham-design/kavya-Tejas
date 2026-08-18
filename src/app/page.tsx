@@ -1,43 +1,39 @@
-import { OpeningScene } from "@/components/invitation/OpeningScene";
-import { HeroScene } from "@/components/invitation/HeroScene";
-import { StorySection } from "@/components/invitation/StorySection";
-import { CelebrationsIntro } from "@/components/invitation/CelebrationsIntro";
-import { AuspiciousTimeline } from "@/components/invitation/AuspiciousTimeline";
-import { CeremonyScene } from "@/components/invitation/CeremonyScene";
-import { Countdown } from "@/components/invitation/Countdown";
-import { VenueSection } from "@/components/invitation/VenueSection";
-import { CoupleIntro } from "@/components/invitation/CoupleIntro";
-import { FloatingControls } from "@/components/ui/FloatingControls";
-import { ScrollThread } from "@/components/ui/ScrollThread";
+"use client";
 
-/**
- * Project-2 is the cinematic edition of the invitation. The story now pauses
- * after the celebrations introduction for a single-day timeline: Haldi,
- * Reception and Muhurtham are three chapters of the same auspicious Thursday.
- */
+import Image from "next/image";
+import { useEffect, useState } from "react";
+import { ArrowDown, ArrowUpRight, CalendarDays, MapPin, Play, Volume2, VolumeX } from "lucide-react";
+import { weddingConfig } from "@/config/wedding";
+
+const events = weddingConfig.wedding.events;
+function GoldLine() { return <span className="lux-line" aria-hidden="true" />; }
+function Reveal({ children, className = "" }: { children: React.ReactNode; className?: string }) { return <div className={`lux-reveal ${className}`}>{children}</div>; }
+
 export default function Page() {
-  return (
-    <>
-      <OpeningScene />
+  const [opened, setOpened] = useState(false);
+  const [music, setMusic] = useState(false);
+  const [language, setLanguage] = useState<"EN" | "TE">("EN");
+  useEffect(() => { document.body.style.overflow = opened ? "auto" : "hidden"; return () => { document.body.style.overflow = "auto"; }; }, [opened]);
 
-      <main className="relative">
-        <HeroScene />
-        <StorySection />
+  return <div className="luxury-invitation">
+    {!opened && <section className="lux-cover" onClick={() => setOpened(true)} aria-label="Open wedding invitation">
+      <div className="lux-cover-glow" /><div className="lux-cover-inner"><p className="lux-micro">A WEDDING INVITATION · 27 AUGUST 2026</p><GoldLine /><div className="lux-monogram">K<span>&</span>T</div><p className="lux-cover-names">Kavya <i>and</i> Tejas</p><p className="lux-cover-place">Vijayawada · Andhra Pradesh</p><button className="lux-open" onClick={() => setOpened(true)}><span>OPEN INVITATION</span><ArrowDown size={14} /></button></div><div className="lux-cover-corner top-left" /><div className="lux-cover-corner bottom-right" />
+    </section>}
 
-        <CelebrationsIntro />
-        <AuspiciousTimeline />
-        <CeremonyScene ceremony="haldi" />
-        <CeremonyScene ceremony="reception" />
-        <CeremonyScene ceremony="muhurtham">
-          <Countdown tone="light" />
-        </CeremonyScene>
+    {opened && <main>
+      <nav className="lux-nav"><a href="#top" className="lux-nav-mark">K<span>&</span>T</a><div className="lux-nav-links"><a href="#celebrations">Celebrations</a><a href="#venue">Venue</a><a href="#rsvp">RSVP</a></div><div className="lux-nav-actions"><button onClick={() => setLanguage(language === "EN" ? "TE" : "EN")}>{language}</button><button onClick={() => setMusic(!music)}>{music ? <Volume2 size={16} /> : <VolumeX size={16} />}</button></div></nav>
 
-        <VenueSection />
-        <CoupleIntro />
-      </main>
+      <section id="top" className="lux-hero"><div className="lux-hero-image"><Image src={weddingConfig.couplePhoto} alt="Kavya and Tejas" fill priority sizes="100vw" className="object-cover" /></div><div className="lux-hero-overlay" /><div className="lux-hero-copy"><p className="lux-micro">WITH THE BLESSINGS OF OUR FAMILIES</p><h1>Kavya <span>&</span> Tejas</h1><GoldLine /><p className="lux-hero-date">27 · 08 · 2026</p><p className="lux-hero-sub">invite you to witness the beginning of forever.</p></div><a href="#story" className="lux-scroll"><span>SCROLL TO ENTER</span><ArrowDown size={14} /></a></section>
 
-      <ScrollThread />
-      <FloatingControls />
-    </>
-  );
+      <section id="story" className="lux-story lux-paper"><div className="lux-section-number">01</div><Reveal className="lux-story-inner"><p className="lux-micro gold">THE BEGINNING</p><h2>Two lives.<br /><em>One beautiful promise.</em></h2><p className="lux-lead">With hearts full of gratitude and joy, we invite you to be part of the moments that bring our families together and begin our next chapter.</p><div className="lux-signature"><span>K</span><span>&</span><span>T</span></div><p className="lux-caption">Together with our families</p></Reveal></section>
+
+      <section id="celebrations" className="lux-celebrations"><div className="lux-section-number light">02</div><div className="lux-section-heading"><p className="lux-micro gold">THE CELEBRATIONS</p><h2>One day.<br /><em>Three chapters.</em></h2></div><div className="lux-events">{events.map((event, index) => <Reveal key={event.key} className={`lux-event lux-event-${index + 1}`}><div className="lux-event-art"><Image src={event.plates[0]} alt={event.name} fill sizes="(max-width: 768px) 92vw, 42vw" className="object-cover" /><div className="lux-art-shade" /><span className="lux-event-index">0{index + 1}</span></div><div className="lux-event-copy"><p className="lux-micro gold">{event.dayName} · {event.dateLabel}</p><h3>{event.name}</h3><p className="lux-event-time">{event.time}</p><p className="lux-event-venue">{event.venue}</p></div></Reveal>)}</div></section>
+
+      <section className="lux-statement"><div className="lux-statement-image"><Image src="/images/envelope/seq-05.jpg" alt="Wedding details" fill sizes="100vw" className="object-cover" /></div><div className="lux-statement-overlay" /><div className="lux-statement-copy"><p className="lux-micro">MARK YOUR CALENDAR</p><p className="lux-big-date">27<sup>TH</sup></p><p className="lux-month">AUGUST · 2026</p><GoldLine /><p className="lux-statement-line">Come for the celebration.<br /><em>Stay for the memories.</em></p></div></section>
+
+      <section id="venue" className="lux-venue lux-paper"><div className="lux-section-number">03</div><Reveal className="lux-venue-grid"><div><p className="lux-micro gold">THE DESTINATION</p><h2>Ishaar<br /><em>Staycation</em></h2><p className="lux-address">Chirravuru, Andhra Pradesh 522303<br />India</p><a className="lux-map" href={weddingConfig.wedding.mapsUrl} target="_blank" rel="noreferrer"><MapPin size={15} /> OPEN IN MAPS <ArrowUpRight size={14} /></a></div><div className="lux-venue-card"><div className="lux-venue-card-top"><CalendarDays size={18} /><span>THURSDAY</span></div><strong>27</strong><span>AUGUST</span><span>2026</span><GoldLine /><small>ALL CELEBRATIONS · ONE PLACE</small></div></Reveal></section>
+
+      <section id="rsvp" className="lux-final"><div className="lux-final-glow" /><Reveal className="lux-final-copy"><p className="lux-micro gold">WITH LOVE</p><h2>Kavya <span>&</span> Tejas</h2><p>We would be honoured to have you with us<br />as we begin this new journey.</p><GoldLine /><p className="lux-final-date">27 · 08 · 2026</p><button className="lux-rsvp"><Play size={13} fill="currentColor" /> RSVP WITH US</button></Reveal><footer>MADE WITH LOVE · KAVYA & TEJAS · 2026</footer></section>
+    </main>}
+  </div>;
 }
