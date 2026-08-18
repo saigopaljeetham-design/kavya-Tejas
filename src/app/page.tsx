@@ -1,29 +1,32 @@
 "use client";
 
 import Image from "next/image";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState, type ReactNode } from "react";
 import { ArrowDown, ArrowUpRight, CalendarDays, MapPin, Play, Volume2, VolumeX } from "lucide-react";
 import { weddingConfig } from "@/config/wedding";
 
 const events = weddingConfig.wedding.events;
 function GoldLine() { return <span className="lux-line" aria-hidden="true" />; }
-function Reveal({ children, className = "" }: { children: React.ReactNode; className?: string }) { return <div className={`lux-reveal ${className}`}>{children}</div>; }
+function Reveal({ children, className = "" }: { children: ReactNode; className?: string }) { return <div className={`lux-reveal ${className}`}>{children}</div>; }
 
 export default function Page() {
   const [opened, setOpened] = useState(false);
   const [music, setMusic] = useState(false);
   const [language, setLanguage] = useState<"EN" | "TE">("EN");
+  const audioRef = useRef<HTMLAudioElement>(null);
   useEffect(() => { document.body.style.overflow = opened ? "auto" : "hidden"; return () => { document.body.style.overflow = "auto"; }; }, [opened]);
+  const toggleMusic = async () => { const audio = audioRef.current; if (!audio) return; if (music) { audio.pause(); setMusic(false); } else { try { await audio.play(); setMusic(true); } catch { setMusic(false); } } };
 
   return <div className="luxury-invitation">
+    <audio ref={audioRef} loop preload="none" src={weddingConfig.music.source} />
     {!opened && <section className="lux-cover" onClick={() => setOpened(true)} aria-label="Open wedding invitation">
-      <div className="lux-cover-glow" /><div className="lux-cover-inner"><p className="lux-micro">A WEDDING INVITATION · 27 AUGUST 2026</p><GoldLine /><div className="lux-monogram">K<span>&</span>T</div><p className="lux-cover-names">Kavya <i>and</i> Tejas</p><p className="lux-cover-place">Vijayawada · Andhra Pradesh</p><button className="lux-open" onClick={() => setOpened(true)}><span>OPEN INVITATION</span><ArrowDown size={14} /></button></div><div className="lux-cover-corner top-left" /><div className="lux-cover-corner bottom-right" />
+      <div className="lux-cover-glow" /><div className="lux-cover-inner"><p className="lux-micro">A WEDDING INVITATION · 27 AUGUST 2026</p><GoldLine /><div className="lux-monogram">K<span>&</span>T</div><p className="lux-cover-names">Kavya <i>and</i> Tejas</p><p className="lux-cover-place">Vijayawada · Andhra Pradesh</p><button className="lux-open" onClick={(e) => { e.stopPropagation(); setOpened(true); }}><span>OPEN INVITATION</span><ArrowDown size={14} /></button></div><div className="lux-cover-corner top-left" /><div className="lux-cover-corner bottom-right" />
     </section>}
 
     {opened && <main>
-      <nav className="lux-nav"><a href="#top" className="lux-nav-mark">K<span>&</span>T</a><div className="lux-nav-links"><a href="#celebrations">Celebrations</a><a href="#venue">Venue</a><a href="#rsvp">RSVP</a></div><div className="lux-nav-actions"><button onClick={() => setLanguage(language === "EN" ? "TE" : "EN")}>{language}</button><button onClick={() => setMusic(!music)}>{music ? <Volume2 size={16} /> : <VolumeX size={16} />}</button></div></nav>
+      <nav className="lux-nav"><a href="#top" className="lux-nav-mark">K<span>&</span>T</a><div className="lux-nav-links"><a href="#celebrations">Celebrations</a><a href="#venue">Venue</a><a href="#rsvp">RSVP</a></div><div className="lux-nav-actions"><button aria-label="Switch language" onClick={() => setLanguage(language === "EN" ? "TE" : "EN")}>{language}</button><button aria-label="Toggle music" onClick={toggleMusic}>{music ? <Volume2 size={16} /> : <VolumeX size={16} />}</button></div></nav>
 
-      <section id="top" className="lux-hero"><div className="lux-hero-image"><Image src={weddingConfig.couplePhoto} alt="Kavya and Tejas" fill priority sizes="100vw" className="object-cover" /></div><div className="lux-hero-overlay" /><div className="lux-hero-copy"><p className="lux-micro">WITH THE BLESSINGS OF OUR FAMILIES</p><h1>Kavya <span>&</span> Tejas</h1><GoldLine /><p className="lux-hero-date">27 · 08 · 2026</p><p className="lux-hero-sub">invite you to witness the beginning of forever.</p></div><a href="#story" className="lux-scroll"><span>SCROLL TO ENTER</span><ArrowDown size={14} /></a></section>
+      <section id="top" className="lux-hero"><div className="lux-hero-image"><Image src={weddingConfig.couplePhoto} alt="Kavya and Tejas" fill priority sizes="100vw" className="object-cover" /></div><div className="lux-hero-overlay" /><div className="lux-hero-copy"><p className="lux-micro">WITH THE BLESSINGS OF OUR FAMILIES</p><h1>{language === "TE" ? "కావ్య & తేజస్" : <>Kavya <span>&</span> Tejas</>}</h1><GoldLine /><p className="lux-hero-date">27 · 08 · 2026</p><p className="lux-hero-sub">{language === "TE" ? "మా కొత్త ప్రయాణానికి మిమ్మల్ని ఆహ్వానిస్తున్నాము." : "invite you to witness the beginning of forever."}</p></div><a href="#story" className="lux-scroll"><span>SCROLL TO ENTER</span><ArrowDown size={14} /></a></section>
 
       <section id="story" className="lux-story lux-paper"><div className="lux-section-number">01</div><Reveal className="lux-story-inner"><p className="lux-micro gold">THE BEGINNING</p><h2>Two lives.<br /><em>One beautiful promise.</em></h2><p className="lux-lead">With hearts full of gratitude and joy, we invite you to be part of the moments that bring our families together and begin our next chapter.</p><div className="lux-signature"><span>K</span><span>&</span><span>T</span></div><p className="lux-caption">Together with our families</p></Reveal></section>
 
