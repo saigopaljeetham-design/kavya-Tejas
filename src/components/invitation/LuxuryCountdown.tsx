@@ -23,7 +23,7 @@ export function LuxuryCountdown() {
   }, []);
 
   if (time.complete) {
-    return <div className="lux-countdown lux-countdown-complete"><span>THE MUHURTHAM HAS BEGUN</span><strong>11:41 PM</strong></div>;
+    return <div className="lux-countdown lux-countdown-complete"><span>ముహూర్తం · THE MUHURTHAM HAS BEGUN</span><strong>11:41 PM</strong></div>;
   }
 
   const units = [
@@ -35,7 +35,7 @@ export function LuxuryCountdown() {
 
   return (
     <section className="lux-countdown-wrap" aria-label="Countdown to the wedding">
-      <p className="lux-micro gold">COUNTING DOWN TO OUR FOREVER</p>
+      <p className="lux-micro gold">ముహూర్తం సమీపిస్తోంది · COUNTING DOWN TO THE AUSPICIOUS MOMENT</p>
       <div className="lux-countdown">
         {units.map(([label, value], index) => (
           <div className="lux-countdown-unit" key={label}>
@@ -45,7 +45,7 @@ export function LuxuryCountdown() {
           </div>
         ))}
       </div>
-      <p className="lux-countdown-date">THURSDAY · 27 AUGUST 2026 · 11:41 PM</p>
+      <p className="lux-countdown-date">THURSDAY · 27 AUGUST 2026 · 11:41 PM · MUHURTHAM</p>
     </section>
   );
 }
