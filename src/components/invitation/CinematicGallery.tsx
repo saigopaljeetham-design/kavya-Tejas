@@ -16,33 +16,47 @@ export function CinematicGallery() {
   const photos = weddingConfig.gallery;
   const [active, setActive] = useState<number | null>(null);
 
+  const previousPhoto = () => {
+    setActive((current) =>
+      current === null
+        ? 0
+        : (current - 1 + photos.length) % photos.length
+    );
+  };
+
+  const nextPhoto = () => {
+    setActive((current) =>
+      current === null ? 0 : (current + 1) % photos.length
+    );
+  };
+
   useEffect(() => {
     if (active === null) return;
 
-    const onKey = (event: KeyboardEvent) => {
-      if (event.key === "Escape") setActive(null);
-
-      if (event.key === "ArrowRight") {
-        setActive((i) => (i === null ? 0 : (i + 1) % photos.length));
+    const handleKeyboard = (event: KeyboardEvent) => {
+      if (event.key === "Escape") {
+        setActive(null);
       }
 
       if (event.key === "ArrowLeft") {
-        setActive((i) =>
-          i === null ? 0 : (i - 1 + photos.length) % photos.length
-        );
+        previousPhoto();
+      }
+
+      if (event.key === "ArrowRight") {
+        nextPhoto();
       }
     };
 
-    document.addEventListener("keydown", onKey);
+    document.addEventListener("keydown", handleKeyboard);
 
-    const previousOverflow = document.body.style.overflow;
+    const oldOverflow = document.body.style.overflow;
     document.body.style.overflow = "hidden";
 
     return () => {
-      document.removeEventListener("keydown", onKey);
-      document.body.style.overflow = previousOverflow;
+      document.removeEventListener("keydown", handleKeyboard);
+      document.body.style.overflow = oldOverflow;
     };
-  }, [active, photos.length]);
+  }, [active]);
 
   return (
     <section
@@ -62,42 +76,89 @@ export function CinematicGallery() {
           </h2>
 
           <p className="mt-5 text-sm leading-7 text-stone-300/70">
-            Every frame stays whole — no forced crop, no missing edges, no
-            forgotten moment.
+            Every memory, exactly as it was meant to be seen.
           </p>
         </header>
 
-        {/* EDITORIAL MASONRY */}
+        {/* GALLERY */}
         <div className="columns-1 gap-5 sm:columns-2 lg:columns-3">
           {photos.map((photo, index) => (
             <button
               key={`${photo.src}-${index}`}
               type="button"
               onClick={() => setActive(index)}
-              aria-label={`Open photo ${index + 1}: ${photo.alt}`}
+              aria-label={`Open photo ${index + 1}`}
               className="group mb-5 block w-full break-inside-avoid text-left"
             >
-              <figure className="relative overflow-hidden rounded-[3px] border border-amber-100/10 bg-[#0d0b09] shadow-[0_20px_70px_rgba(0,0,0,0.25)]">
+              <figure className="relative overflow-hidden rounded-[4px] border border-amber-100/10 bg-[#0d0b09] shadow-[0_20px_70px_rgba(0,0,0,0.28)]">
 
-                <Image
-                  src={photo.src}
-                  alt={photo.alt}
-                  width={1600}
-                  height={1200}
-                  sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
-                  quality={100}
-                  priority={index < 2}
-                  className="block h-auto w-full object-contain transition duration-700 ease-out group-hover:scale-[1.015]"
+                {/* IMAGE */}
+                <div className="relative w-full">
+                  <Image
+                    src={photo.src}
+                    alt={photo.alt}
+                    width={2400}
+                    height={1800}
+                    sizes="
+                      (max-width: 640px) 100vw,
+                      (max-width: 1024px) 50vw,
+                      33vw
+                    "
+                    quality={100}
+                    priority={index < 3}
+                    className="
+                      block
+                      h-auto
+                      max-h-[85vh]
+                      w-full
+                      object-contain
+                      transition-transform
+                      duration-700
+                      ease-out
+                      group-hover:scale-[1.012]
+                    "
+                  />
+                </div>
+
+                {/* SUBTLE OVERLAY */}
+                <div
+                  className="
+                    pointer-events-none
+                    absolute
+                    inset-0
+                    bg-gradient-to-t
+                    from-black/70
+                    via-transparent
+                    to-black/5
+                    opacity-80
+                  "
                 />
 
-                <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-black/65 via-transparent to-black/5 opacity-80" />
-
-                <span className="absolute right-3 top-3 text-[8px] tracking-[0.24em] text-amber-100/70">
+                {/* NUMBER */}
+                <span
+                  className="
+                    absolute
+                    right-3
+                    top-3
+                    text-[8px]
+                    tracking-[0.24em]
+                    text-amber-100/75
+                  "
+                >
                   {String(index + 1).padStart(2, "0")}
                 </span>
 
+                {/* CAPTION */}
                 <figcaption className="absolute inset-x-0 bottom-0 p-5">
-                  <span className="block text-[8px] uppercase tracking-[0.3em] text-amber-200/70">
+                  <span
+                    className="
+                      block
+                      text-[8px]
+                      uppercase
+                      tracking-[0.3em]
+                      text-amber-200/70
+                    "
+                  >
                     {memoryChapters[index % memoryChapters.length]}
                   </span>
 
@@ -129,7 +190,17 @@ export function CinematicGallery() {
           role="dialog"
           aria-modal="true"
           aria-label="Wedding photograph viewer"
-          className="fixed inset-0 z-[100] flex items-center justify-center bg-black/95 p-3 sm:p-8"
+          className="
+            fixed
+            inset-0
+            z-[100]
+            flex
+            items-center
+            justify-center
+            bg-black/96
+            p-3
+            sm:p-6
+          "
           onClick={() => setActive(null)}
         >
 
@@ -138,7 +209,21 @@ export function CinematicGallery() {
             type="button"
             aria-label="Close photo viewer"
             onClick={() => setActive(null)}
-            className="absolute right-4 top-4 z-10 rounded-full border border-white/15 bg-black/50 px-4 py-2 text-xs text-white/80 backdrop-blur"
+            className="
+              absolute
+              right-4
+              top-4
+              z-20
+              rounded-full
+              border
+              border-white/15
+              bg-black/60
+              px-4
+              py-2
+              text-xs
+              text-white/85
+              backdrop-blur
+            "
           >
             Close
           </button>
@@ -149,19 +234,40 @@ export function CinematicGallery() {
             aria-label="Previous photo"
             onClick={(event) => {
               event.stopPropagation();
-
-              setActive(
-                (active - 1 + photos.length) % photos.length
-              );
+              previousPhoto();
             }}
-            className="absolute left-3 top-1/2 z-10 -translate-y-1/2 rounded-full border border-white/15 bg-black/45 px-4 py-3 text-white/90 backdrop-blur"
+            className="
+              absolute
+              left-2
+              top-1/2
+              z-20
+              -translate-y-1/2
+              rounded-full
+              border
+              border-white/15
+              bg-black/55
+              px-4
+              py-3
+              text-white
+              backdrop-blur
+              transition
+              hover:bg-black/80
+            "
           >
             ←
           </button>
 
-          {/* FULL IMAGE */}
+          {/* ORIGINAL PROPORTION VIEWER */}
           <div
-            className="relative flex h-[90vh] w-full max-w-7xl items-center justify-center"
+            className="
+              relative
+              flex
+              h-[88vh]
+              w-[calc(100vw-90px)]
+              max-w-[1500px]
+              items-center
+              justify-center
+            "
             onClick={(event) => event.stopPropagation()}
           >
             <Image
@@ -181,26 +287,49 @@ export function CinematicGallery() {
             aria-label="Next photo"
             onClick={(event) => {
               event.stopPropagation();
-
-              setActive((active + 1) % photos.length);
+              nextPhoto();
             }}
-            className="absolute right-3 top-1/2 z-10 -translate-y-1/2 rounded-full border border-white/15 bg-black/45 px-4 py-3 text-white/90 backdrop-blur"
+            className="
+              absolute
+              right-2
+              top-1/2
+              z-20
+              -translate-y-1/2
+              rounded-full
+              border
+              border-white/15
+              bg-black/55
+              px-4
+              py-3
+              text-white
+              backdrop-blur
+              transition
+              hover:bg-black/80
+            "
           >
             →
           </button>
 
           {/* COUNTER */}
-          <div className="absolute bottom-5 left-1/2 -translate-x-1/2 text-center">
-            <div className="text-[9px] uppercase tracking-[0.3em] text-amber-200/70">
+          <div
+            className="
+              absolute
+              bottom-5
+              left-1/2
+              z-20
+              -translate-x-1/2
+              text-center
+            "
+          >
+            <div className="text-[9px] uppercase tracking-[0.3em] text-amber-200/75">
               {String(active + 1).padStart(2, "0")} /{" "}
               {String(photos.length).padStart(2, "0")}
             </div>
 
-            <div className="mt-1 text-xs text-white/75">
+            <div className="mt-1 max-w-[80vw] text-xs text-white/75">
               {photos[active].alt}
             </div>
           </div>
-
         </div>
       )}
     </section>
