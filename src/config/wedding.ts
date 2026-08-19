@@ -34,7 +34,7 @@ export const weddingConfig = {
     mapsUrl: "https://www.google.com/maps/search/?api=1&query=Ishaar&query_place_id=ChIJt3N6MQD7NToRT_eM6gPrnMk",
   },
 
-  contact: { whatsapp: "" },
+  contact: { whatsapp: "919848045623" },
   music: { enabled: true, source: "/music/marriagesong.mp3" },
 
   gallery: [
