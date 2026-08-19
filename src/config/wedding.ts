@@ -38,16 +38,6 @@ export const weddingConfig = {
   music: { enabled: true, source: "/music/marriagesong.mp3" },
 
   gallery: [
-    { src: "/images/wedding/DSC01669.jpg", alt: "Kavya and Tejas together" },
-    { src: "/images/wedding/DSC01686.jpg", alt: "Kavya and Tejas sharing a quiet moment" },
-    { src: "/images/wedding/DSC01291.jpg", alt: "Kavya and Tejas by the historic stonework" },
-    { src: "/images/wedding/DSC01273-1.jpg", alt: "Kavya and Tejas together outdoors" },
-    { src: "/images/wedding/DSC01235.jpg", alt: "Kavya and Tejas on the promenade" },
-    { src: "/images/wedding/DSC01359.jpg", alt: "Kavya and Tejas walking together" },
-    { src: "/images/wedding/DSC02002.jpg", alt: "Kavya and Tejas sharing a joyful moment" },
-    { src: "/images/wedding/DSC02017.jpg", alt: "Tejas in a candid moment" },
-    { src: "/images/wedding/DSC01967.jpg", alt: "Kavya and Tejas arriving together" },
-    { src: "/images/wedding/DSC01957.jpg", alt: "Kavya and Tejas by the car" },
     { src: "/images/gallery/01-couple-standing.jpg", alt: "Kavya and Tejas together" },
     { src: "/images/gallery/02-couple-seated.jpg", alt: "Kavya and Tejas sharing a moment" },
     { src: "/images/gallery/05-couple-portrait.jpg", alt: "Kavya and Tejas in traditional attire" },
