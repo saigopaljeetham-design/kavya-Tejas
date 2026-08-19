@@ -1,7 +1,7 @@
 /**
  * Wedding invitation data for Kavya & Tejas.
- * The copy is intentionally written as one Telugu wedding story,
- * so each section feels connected instead of like separate website cards.
+ * The copy is written as one Telugu wedding story: people first,
+ * rituals second, and the celebration as the thread connecting both.
  */
 
 export const weddingConfig = {
@@ -27,10 +27,10 @@ export const weddingConfig = {
     ceremony: "Muhurtham / Wedding Ceremony",
     venue: "Ishaar Staycation, Vijayawada",
     story: {
-      eyebrow: "A Telugu wedding story",
+      eyebrow: "Kavya & Tejas · a Telugu wedding story",
       title: "Two lives. One sacred beginning.",
-      intro: "In an Andhra home, a wedding is never only about two people. It is a gathering of families, blessings, traditions and memories — carried from one generation to the next.",
-      culturalNote: "From pasupu and flowers to the sacred Muhurtham, every ritual has a place in their story.",
+      intro: "This is not only the story of a wedding day. It is the story of Kavya and Tejas arriving at one auspicious moment with the people, rituals and memories that make it meaningful.",
+      culturalNote: "In a Telugu wedding, celebration and tradition live side by side — pasupu in the morning, a gathering in the evening, and the sacred Muhurtham at the heart of the night.",
     },
     events: [
       {
@@ -41,7 +41,7 @@ export const weddingConfig = {
         dateLabel: "27 August 2026",
         time: "10:30 AM",
         venue: "Ishaar Staycation, Vijayawada",
-        story: "A morning of pasupu, laughter and the warmth of family.",
+        story: "The day begins with pasupu, warmth and the easy joy of being surrounded by family.",
         plates: ["/images/ceremonies/haldi.png"],
       },
       {
@@ -52,7 +52,7 @@ export const weddingConfig = {
         dateLabel: "27 August 2026",
         time: "6:00 PM",
         venue: "Ishaar Staycation, Vijayawada",
-        story: "An evening to gather, celebrate and welcome their new beginning.",
+        story: "As evening arrives, loved ones gather to celebrate Kavya and Tejas and welcome the chapter ahead.",
         plates: ["/images/ceremonies/reception.png"],
       },
       {
@@ -63,7 +63,7 @@ export const weddingConfig = {
         dateLabel: "27 August 2026",
         time: "11:41 PM",
         venue: "Ishaar Staycation, Vijayawada",
-        story: "At the auspicious hour, two families become one shared story.",
+        story: "At 11:41 PM, celebration becomes ceremony — the auspicious moment that gives their wedding its beginning.",
         plates: ["/images/ceremonies/muhurtam.png"],
       },
     ],
@@ -76,14 +76,14 @@ export const weddingConfig = {
 
   gallery: [
     { src: "/images/gallery/01-couple-standing.jpg", alt: "Kavya and Tejas together" },
-    { src: "/images/gallery/02-couple-seated.jpg", alt: "Kavya and Tejas sharing a moment" },
+    { src: "/images/gallery/02-couple-seated.jpg", alt: "A quiet moment shared by Kavya and Tejas" },
     { src: "/images/gallery/05-couple-portrait.jpg", alt: "Kavya and Tejas in traditional attire" },
-    { src: "/images/gallery/03-hands-together.jpg", alt: "Kavya and Tejas together" },
-    { src: "/images/gallery/04-hands-closeup.jpg", alt: "A close-up wedding moment" },
+    { src: "/images/gallery/03-hands-together.jpg", alt: "A moment held between them" },
+    { src: "/images/gallery/04-hands-closeup.jpg", alt: "A close-up of a shared moment" },
     { src: "/images/gallery/06-couple-outdoor.jpg", alt: "Kavya and Tejas outdoors" },
-    { src: "/images/gallery/07-couple-car.jpg", alt: "Kavya and Tejas by the car" },
-    { src: "/images/gallery/09-couple-car-wide.jpg", alt: "Kavya and Tejas with the car" },
-    { src: "/images/gallery/08-hands-holding.jpg", alt: "Kavya and Tejas holding hands" },
+    { src: "/images/gallery/07-couple-car.jpg", alt: "A candid moment with Kavya and Tejas" },
+    { src: "/images/gallery/09-couple-car-wide.jpg", alt: "A memory from their journey together" },
+    { src: "/images/gallery/08-hands-holding.jpg", alt: "Hands held before the wedding day" },
   ],
 
   site: { url: "" },
