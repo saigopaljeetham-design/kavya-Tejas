@@ -1,17 +1,17 @@
 "use client";
 
-import { Music2, VolumeX, Languages, Share2 } from "lucide-react";
+import { Music2, Languages, Share2 } from "lucide-react";
 import { useState } from "react";
 import { useInvitation } from "@/components/providers/InvitationProvider";
 import { weddingConfig } from "@/config/wedding";
 
 /**
- * The three persistent controls: music, language and share.
- * Kept to a single compact column so they never cover the invitation.
+ * Persistent invitation controls.
+ * Music is intentionally hidden: the wedding song starts automatically
+ * when the guest opens the envelope.
  */
 export function FloatingControls() {
-  const { opened, musicOn, toggleMusic, language, setLanguage, t, musicAvailable } =
-    useInvitation();
+  const { opened, language, setLanguage, t } = useInvitation();
   const [shareNote, setShareNote] = useState(false);
 
   if (!opened) return null;
@@ -52,27 +52,6 @@ export function FloatingControls() {
 
   return (
     <div className="fixed bottom-4 right-4 z-50 flex flex-col gap-2 sm:bottom-6 sm:right-6">
-      {weddingConfig.music.enabled ? (
-        <button
-          type="button"
-          onClick={toggleMusic}
-          className={btn}
-          aria-pressed={musicOn}
-          aria-label={musicOn ? t.ui.musicOn : t.ui.musicOff}
-          title={musicOn ? t.ui.musicOn : t.ui.musicOff}
-        >
-          {musicOn ? (
-            <Music2 className="h-4 w-4" aria-hidden="true" />
-          ) : (
-            <VolumeX className="h-4 w-4 opacity-70" aria-hidden="true" />
-          )}
-          {musicOn ? (
-            <span className="absolute -right-0.5 -top-0.5 h-2 w-2 rounded-full bg-gold" />
-          ) : null}
-          {!musicAvailable ? <span className="sr-only">(audio file not added yet)</span> : null}
-        </button>
-      ) : null}
-
       <button
         type="button"
         onClick={nextLanguage}
