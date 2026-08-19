@@ -16,12 +16,19 @@ const memoryChapters = [
 export default function CinematicGallery() {
   return (
     <section id="gallery" className="relative overflow-hidden px-5 py-28 sm:px-8 lg:px-12">
+      <div className="pointer-events-none absolute inset-x-0 top-0 mx-auto flex max-w-6xl justify-between px-6 text-xs tracking-[0.5em] text-amber-200/25">
+        <span>❧ ✦ ❧</span>
+        <span>❧ ✦ ❧</span>
+      </div>
+
       <div className="mx-auto max-w-6xl">
         <div className="mb-12 max-w-2xl">
-          <p className="text-[10px] uppercase tracking-[0.38em] text-amber-200/65">
-            జ్ఞాపకాలు · memories
-          </p>
-          <h2 className="mt-4 font-serif text-4xl leading-tight text-amber-50 sm:text-5xl">
+          <div className="mb-4 flex items-center gap-3 text-[9px] uppercase tracking-[0.4em] text-amber-200/45">
+            <span>❧</span>
+            <span>జ్ఞాపకాలు · memories</span>
+            <span>❧</span>
+          </div>
+          <h2 className="font-serif text-4xl leading-tight text-amber-50 sm:text-5xl">
             Moments, held forever.
           </h2>
           <p className="mt-5 max-w-xl text-sm leading-7 text-stone-300/70">
@@ -73,8 +80,12 @@ export default function CinematicGallery() {
         </div>
 
         <div className="mt-14 flex flex-col items-center text-center">
-          <span className="text-[10px] tracking-[0.5em] text-amber-200/45">॥</span>
-          <p className="mt-3 font-serif text-lg italic text-amber-100/70">
+          <div className="mb-4 flex items-center gap-4 text-xs tracking-[0.45em] text-amber-200/35">
+            <span>❧</span>
+            <span>॥</span>
+            <span>❧</span>
+          </div>
+          <p className="font-serif text-lg italic text-amber-100/70">
             Some moments become stories. Some stories become family.
           </p>
           <p className="mt-3 text-[9px] uppercase tracking-[0.28em] text-stone-500">
