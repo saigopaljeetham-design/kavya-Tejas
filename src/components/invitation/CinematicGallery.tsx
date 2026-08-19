@@ -1,16 +1,32 @@
 import React from "react";
 import { weddingConfig } from "@/config/wedding";
 
+const memoryChapters = [
+  "Before the rituals",
+  "In the little moments",
+  "On the way to forever",
+  "Held close",
+  "A memory for the family album",
+  "The days that brought them here",
+  "A candid chapter",
+  "A shared journey",
+  "Hands held, hearts ready",
+];
+
 export default function CinematicGallery() {
   return (
     <section id="gallery" className="relative overflow-hidden px-5 py-28 sm:px-8 lg:px-12">
       <div className="mx-auto max-w-6xl">
         <div className="mb-12 max-w-2xl">
-          <p className="text-[10px] uppercase tracking-[0.38em] text-amber-200/65">A glimpse of us</p>
-          <h2 className="mt-4 font-serif text-4xl text-amber-50 sm:text-5xl">Moments, held forever.</h2>
+          <p className="text-[10px] uppercase tracking-[0.38em] text-amber-200/65">
+            జ్ఞాపకాలు · memories
+          </p>
+          <h2 className="mt-4 font-serif text-4xl leading-tight text-amber-50 sm:text-5xl">
+            Moments, held forever.
+          </h2>
           <p className="mt-5 max-w-xl text-sm leading-7 text-stone-300/70">
-            Before the rituals, there were these little moments — laughter, hands held,
-            quiet glances and the ordinary days that led them here.
+            A wedding story is made of more than the ceremony. These are the glances,
+            laughter, hands and ordinary moments that make the celebration belong to Kavya and Tejas.
           </p>
         </div>
 
@@ -39,8 +55,14 @@ export default function CinematicGallery() {
                   className="h-full w-full object-cover transition duration-1000 ease-out group-hover:scale-[1.035]"
                   loading={index < 3 ? "eager" : "lazy"}
                 />
-                <figcaption className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/75 to-transparent px-4 pb-4 pt-12 text-[10px] tracking-[0.08em] text-stone-200/85 opacity-0 transition duration-500 group-hover:opacity-100">
-                  {photo.alt}
+                <div className="absolute inset-0 bg-gradient-to-t from-black/65 via-transparent to-transparent opacity-80" />
+                <figcaption className="absolute inset-x-0 bottom-0 px-4 pb-4 pt-10">
+                  <span className="block text-[8px] uppercase tracking-[0.28em] text-amber-200/60">
+                    {memoryChapters[index]}
+                  </span>
+                  <span className="mt-1 block text-[10px] tracking-[0.06em] text-stone-100/85">
+                    {photo.alt}
+                  </span>
                 </figcaption>
                 <span className="absolute right-3 top-3 text-[8px] tracking-[0.2em] text-amber-100/60">
                   {String(index + 1).padStart(2, "0")}
@@ -53,7 +75,10 @@ export default function CinematicGallery() {
         <div className="mt-14 flex flex-col items-center text-center">
           <span className="text-[10px] tracking-[0.5em] text-amber-200/45">॥</span>
           <p className="mt-3 font-serif text-lg italic text-amber-100/70">
-            Some memories become family stories.
+            Some moments become stories. Some stories become family.
+          </p>
+          <p className="mt-3 text-[9px] uppercase tracking-[0.28em] text-stone-500">
+            Kavya & Tejas · before the Muhurtham
           </p>
         </div>
       </div>
