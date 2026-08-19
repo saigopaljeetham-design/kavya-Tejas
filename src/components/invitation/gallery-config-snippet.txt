@@ -1,0 +1,34 @@
+Replace the existing gallery array in src/config/wedding.ts with:
+
+  gallery: [
+    {
+      src: "/images/gallery/dsc01967-copy.webp",
+      alt: "Kavya and Tejas together by the car",
+      width: 1024,
+      height: 1536,
+    },
+    {
+      src: "/images/gallery/dsc01791-copy.webp",
+      alt: "Kavya and Tejas sharing a quiet moment",
+      width: 1536,
+      height: 1024,
+    },
+    {
+      src: "/images/gallery/dsc01924-copy.webp",
+      alt: "Kavya and Tejas beside their car",
+      width: 1536,
+      height: 1024,
+    },
+    {
+      src: "/images/gallery/dsc01711-copy.webp",
+      alt: "Kavya and Tejas holding hands",
+      width: 1536,
+      height: 1024,
+    },
+    {
+      src: "/images/gallery/dsc01704-copy.webp",
+      alt: "Kavya and Tejas in the stone passage",
+      width: 1024,
+      height: 1536,
+    },
+  ],
