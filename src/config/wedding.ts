@@ -130,24 +130,24 @@ export const weddingConfig = {
     src: "/images/gallery/couple.jpeg",
     alt: "Kavya and Tejas",
   },
-  {
-    src: "/images/gallery/dsc01704-copy.webp",
+    {
+    src: "/images/gallery/DSC01704 copy.jpg",
     alt: "Kavya and Tejas in a beautiful setting",
   },
   {
-    src: "/images/gallery/dsc01711-copy.webp",
+    src: "/images/gallery/DSC01711 copy.jpg",
     alt: "Kavya and Tejas holding hands",
   },
   {
-    src: "/images/gallery/dsc01791-copy.webp",
+    src: "/images/gallery/DSC01791 copy.jpg",
     alt: "Kavya and Tejas sharing a moment",
   },
   {
-    src: "/images/gallery/dsc01924-copy.webp",
+    src: "/images/gallery/DSC01924 copy.jpg",
     alt: "Kavya and Tejas beside their car",
   },
   {
-    src: "/images/gallery/dsc01967-copy.webp",
+    src: "/images/gallery/DSC01967 copy.jpg",
     alt: "Kavya and Tejas together by the car",
   },
 ],
