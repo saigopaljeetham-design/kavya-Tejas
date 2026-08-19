@@ -77,17 +77,80 @@ export const weddingConfig = {
   // Keep gallery entries mapped to files that are actually committed under public/.
   // The GitHub upload contains the original DSC filenames, so these paths avoid
   // broken-image tiles caused by the old generated filenames.
-  gallery: [
-    { src: "/images/gallery/DSC01273-1.jpg", alt: "Kavya and Tejas together" },
-    { src: "/images/gallery/02-couple-seated.jpg", alt: "A quiet moment shared by Kavya and Tejas" },
-    { src: "/images/gallery/03-hands-together.jpg", alt: "A moment held between them" },
-    { src: "/images/gallery/DSC01359 copy.jpg", alt: "Kavya and Tejas walking together" },
-    { src: "/images/gallery/couple.jpeg", alt: "Kavya and Tejas in traditional attire" },
-    { src: "/images/gallery/06-couple-outdoor.jpg", alt: "Kavya and Tejas outdoors" },
-    { src: "/images/gallery/07-couple-car.jpg", alt: "A candid moment with Kavya and Tejas" },
-    { src: "/images/gallery/DSC02017 copy1.jpg", alt: "A candid memory from their journey together" },
-    { src: "/images/gallery/09-couple-car-wide.jpg", alt: "A memory from their journey together" },
-  ],
+ gallery: [
+  {
+    src: "/images/gallery/02-couple-seated.jpg",
+    alt: "Kavya and Tejas sharing a quiet moment",
+  },
+  {
+    src: "/images/gallery/03-hands-together.jpg",
+    alt: "A moment held between Kavya and Tejas",
+  },
+  {
+    src: "/images/gallery/06-couple-outdoor.jpg",
+    alt: "Kavya and Tejas outdoors",
+  },
+  {
+    src: "/images/gallery/07-couple-car.jpg",
+    alt: "Kavya and Tejas with their car",
+  },
+  {
+    src: "/images/gallery/09-couple-car-wide.jpg",
+    alt: "Kavya and Tejas on their journey together",
+  },
+  {
+    src: "/images/gallery/DSC01291.jpg",
+    alt: "A memory from Kavya and Tejas",
+  },
+  {
+    src: "/images/gallery/DSC01359 copy.jpg",
+    alt: "Kavya and Tejas walking together",
+  },
+  {
+    src: "/images/gallery/DSC01669.jpg",
+    alt: "Kavya and Tejas together",
+  },
+  {
+    src: "/images/gallery/DSC01686.jpg",
+    alt: "A candid moment of Kavya and Tejas",
+  },
+  {
+    src: "/images/gallery/DSC01957 copy.jpg",
+    alt: "A beautiful memory together",
+  },
+  {
+    src: "/images/gallery/DSC02002 copy.jpg",
+    alt: "A candid memory from their journey",
+  },
+  {
+    src: "/images/gallery/DSC02017 copy1.jpg",
+    alt: "Kavya and Tejas together",
+  },
+  {
+    src: "/images/gallery/couple.jpeg",
+    alt: "Kavya and Tejas",
+  },
+  {
+    src: "/images/gallery/dsc01704-copy.webp",
+    alt: "Kavya and Tejas in a beautiful setting",
+  },
+  {
+    src: "/images/gallery/dsc01711-copy.webp",
+    alt: "Kavya and Tejas holding hands",
+  },
+  {
+    src: "/images/gallery/dsc01791-copy.webp",
+    alt: "Kavya and Tejas sharing a moment",
+  },
+  {
+    src: "/images/gallery/dsc01924-copy.webp",
+    alt: "Kavya and Tejas beside their car",
+  },
+  {
+    src: "/images/gallery/dsc01967-copy.webp",
+    alt: "Kavya and Tejas together by the car",
+  },
+],
 
   site: { url: "" },
 } as const;
