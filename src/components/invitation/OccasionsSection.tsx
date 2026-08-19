@@ -16,8 +16,20 @@ const ritualLabels: Record<string, string> = {
 export default function OccasionsSection() {
   return (
     <section id="occasions" className="relative overflow-hidden px-5 py-24 sm:px-8 lg:px-12">
+      <div className="pointer-events-none absolute inset-x-0 top-0 hidden h-24 opacity-25 sm:block">
+        <div className="mx-auto flex max-w-6xl items-start justify-between px-6 text-[11px] tracking-[0.5em] text-amber-200/40">
+          <span>❧ ❧ ❧</span>
+          <span>❧ ❧ ❧</span>
+        </div>
+      </div>
+
       <div className="mx-auto max-w-6xl">
         <div className="mx-auto mb-14 max-w-2xl text-center">
+          <div className="mb-5 flex items-center justify-center gap-3 text-[9px] uppercase tracking-[0.4em] text-amber-200/45">
+            <span>✦</span>
+            <span>శుభ కార్యం</span>
+            <span>✦</span>
+          </div>
           <p className="mb-4 text-[10px] uppercase tracking-[0.38em] text-amber-200/70">
             27 August 2026 · Ishaar Staycation
           </p>
@@ -71,6 +83,7 @@ export default function OccasionsSection() {
         </div>
 
         <div className="mx-auto mt-8 max-w-3xl border-y border-amber-100/10 py-8 text-center">
+          <div className="mb-4 text-xs tracking-[0.45em] text-amber-200/35">❧ ✦ ❧</div>
           <p className="font-serif text-lg italic leading-8 text-amber-100/80">
             “Three moments. One wedding. A beginning to remember.”
           </p>
