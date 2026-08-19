@@ -1,6 +1,7 @@
 /**
  * Wedding invitation data for Kavya & Tejas.
- * Edit this file to change the invitation details.
+ * The copy is intentionally written as one Telugu wedding story,
+ * so each section feels connected instead of like separate website cards.
  */
 
 export const weddingConfig = {
@@ -25,10 +26,46 @@ export const weddingConfig = {
     time: "11:41 PM",
     ceremony: "Muhurtham / Wedding Ceremony",
     venue: "Ishaar Staycation, Vijayawada",
+    story: {
+      eyebrow: "A Telugu wedding story",
+      title: "Two lives. One sacred beginning.",
+      intro: "In an Andhra home, a wedding is never only about two people. It is a gathering of families, blessings, traditions and memories — carried from one generation to the next.",
+      culturalNote: "From pasupu and flowers to the sacred Muhurtham, every ritual has a place in their story.",
+    },
     events: [
-      { key: "haldi", name: "Haldi", dayName: "Thursday", dateLabel: "27 August 2026", time: "10:30 AM", venue: "Ishaar Staycation, Vijayawada", plates: ["/images/ceremonies/haldi.png"] },
-      { key: "reception", name: "Reception", dayName: "Thursday", dateLabel: "27 August 2026", time: "6:00 PM", venue: "Ishaar Staycation, Vijayawada", plates: ["/images/ceremonies/reception.png"] },
-      { key: "muhurtham", name: "Muhurtham", dayName: "Thursday", dateLabel: "27 August 2026", time: "11:41 PM", venue: "Ishaar Staycation, Vijayawada", plates: ["/images/ceremonies/muhurtam.png"] },
+      {
+        key: "haldi",
+        name: "Haldi",
+        teluguName: "పసుపు",
+        dayName: "Thursday",
+        dateLabel: "27 August 2026",
+        time: "10:30 AM",
+        venue: "Ishaar Staycation, Vijayawada",
+        story: "A morning of pasupu, laughter and the warmth of family.",
+        plates: ["/images/ceremonies/haldi.png"],
+      },
+      {
+        key: "reception",
+        name: "Reception",
+        teluguName: "స్వాగతం",
+        dayName: "Thursday",
+        dateLabel: "27 August 2026",
+        time: "6:00 PM",
+        venue: "Ishaar Staycation, Vijayawada",
+        story: "An evening to gather, celebrate and welcome their new beginning.",
+        plates: ["/images/ceremonies/reception.png"],
+      },
+      {
+        key: "muhurtham",
+        name: "Muhurtham",
+        teluguName: "ముహూర్తం",
+        dayName: "Thursday",
+        dateLabel: "27 August 2026",
+        time: "11:41 PM",
+        venue: "Ishaar Staycation, Vijayawada",
+        story: "At the auspicious hour, two families become one shared story.",
+        plates: ["/images/ceremonies/muhurtam.png"],
+      },
     ],
     address: "Ishaar Staycation, Chirravuru, Andhra Pradesh 522303, India",
     mapsUrl: "https://www.google.com/maps/search/?api=1&query=Ishaar&query_place_id=ChIJt3N6MQD7NToRT_eM6gPrnMk",
