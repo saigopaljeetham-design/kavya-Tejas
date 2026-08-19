@@ -13,7 +13,7 @@ const ritualLabels: Record<string, string> = {
   muhurtham: "The sacred hour",
 };
 
-export default function OccasionsSection() {
+export function OccasionsSection() {
   return (
     <section id="occasions" className="relative overflow-hidden px-5 py-24 sm:px-8 lg:px-12">
       <div className="pointer-events-none absolute inset-x-0 top-0 hidden h-24 opacity-25 sm:block">
@@ -95,3 +95,5 @@ export default function OccasionsSection() {
     </section>
   );
 }
+
+export default OccasionsSection;
