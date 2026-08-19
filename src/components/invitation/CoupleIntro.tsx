@@ -6,6 +6,10 @@ export default function CoupleIntro() {
 
   return (
     <section id="story" className="relative overflow-hidden px-5 py-28 sm:px-8 lg:px-12">
+      <div className="pointer-events-none absolute inset-x-0 top-0 h-24 opacity-30">
+        <div className="mx-auto h-full max-w-6xl border-t border-amber-200/10" />
+        <div className="absolute left-1/2 top-0 h-10 w-40 -translate-x-1/2 rounded-b-full border-x border-b border-amber-200/10" />
+      </div>
       <div className="pointer-events-none absolute left-1/2 top-10 h-40 w-40 -translate-x-1/2 rounded-full bg-amber-200/[0.025] blur-3xl" />
 
       <div className="mx-auto grid max-w-6xl items-center gap-14 lg:grid-cols-[0.82fr_1.18fr]">
@@ -14,6 +18,7 @@ export default function CoupleIntro() {
           <div className="absolute -inset-2 border border-amber-200/15" />
           <div className="absolute -left-3 top-1/2 h-16 w-px -translate-y-1/2 bg-amber-200/35" />
           <div className="absolute -right-3 top-1/2 h-16 w-px -translate-y-1/2 bg-amber-200/35" />
+          <div className="absolute -top-4 left-1/2 -translate-x-1/2 text-xs tracking-[0.45em] text-amber-200/45">✦ ✦ ✦</div>
 
           <div className="relative aspect-[4/5] overflow-hidden bg-black/30">
             <img
@@ -62,6 +67,12 @@ export default function CoupleIntro() {
               <span className="block text-amber-100/65">Groom · వరుడు</span>
               <span className="mt-2 block font-serif text-xl normal-case tracking-normal text-stone-200">{groom.name}</span>
             </div>
+          </div>
+
+          <div className="mt-10 flex items-center gap-3 text-[9px] uppercase tracking-[0.3em] text-amber-200/35">
+            <span>❧</span>
+            <span>శుభమస్తు</span>
+            <span>❧</span>
           </div>
         </div>
       </div>
