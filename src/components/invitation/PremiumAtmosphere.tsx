@@ -2,13 +2,49 @@
 
 import { useEffect, useState } from "react";
 
-const petals = Array.from({ length: 18 }, (_, i) => ({
-  left: `${(i * 17 + 5) % 100}%`, delay: `${(i % 7) * 1.1}s`, duration: `${8 + (i % 5) * 1.5}s`, size: `${5 + (i % 4) * 2}px`, drift: `${((i % 5) - 2) * 28}px`,
-}));
+const petals = Array.from({ length: 18 }, (_, i) => ({ left: `${(i * 17 + 5) % 100}%`, delay: `${(i % 7) * 1.1}s`, duration: `${8 + (i % 5) * 1.5}s`, size: `${5 + (i % 4) * 2}px`, drift: `${((i % 5) - 2) * 28}px` }));
+const vows = [
+  ["ధర్మం · DHARMA", "Purpose & righteousness together"],
+  ["ప్రేమ · PREMA", "Unconditional affection and warmth"],
+  ["మైత్రి · MAITRI", "Lifelong friendship as the foundation"],
+  ["సంతోషం · SANTOSHA", "Shared joy in everyday moments"],
+  ["సహచర్యం · SAHACHARYA", "Walking hand-in-hand through all phases"],
+  ["కుటుంబం · KUTUMBA", "Honouring families and traditions"],
+  ["అక్షయ · AKSHAYA", "An everlasting commitment"],
+];
 
 export function PremiumAtmosphere() {
   const [bells, setBells] = useState(0);
-  useEffect(() => { if (!bells) return; const timer = window.setTimeout(() => setBells(0), 900); return () => window.clearTimeout(timer); }, [bells]);
+
+  useEffect(() => {
+    if (!bells) return; const timer = window.setTimeout(() => setBells(0), 900); return () => window.clearTimeout(timer);
+  }, [bells]);
+
+  useEffect(() => {
+    const story = document.querySelector<HTMLElement>(".celestial-story");
+    const stars = Array.from(document.querySelectorAll<HTMLElement>(".celestial-star"));
+    if (!story || !stars.length) return;
+    const observer = new IntersectionObserver(entries => { if (entries.some(e => e.isIntersecting)) { stars.forEach((star,i) => { star.classList.add("is-sequencing"); star.style.setProperty("--star-delay", `${i * 130}ms`); }); observer.disconnect(); } }, { threshold: .25 });
+    observer.observe(story);
+    const handlers = stars.map((star,i) => {
+      const handler = () => {
+        if (typeof navigator !== "undefined" && "vibrate" in navigator) navigator.vibrate?.(15);
+        let sheet = document.querySelector<HTMLElement>(".saptapadi-sheet");
+        if (!sheet) {
+          sheet = document.createElement("div"); sheet.className = "saptapadi-sheet";
+          sheet.innerHTML = `<div class="saptapadi-sheet-backdrop"></div><div class="saptapadi-sheet-card" role="dialog" aria-modal="true"><button class="saptapadi-sheet-close" aria-label="Close">×</button><span class="saptapadi-sheet-kicker">SAPTAPADI · SACRED STEP ${i+1}</span><strong class="saptapadi-sheet-title"></strong><p class="saptapadi-sheet-reflection"></p><span class="saptapadi-sheet-rule">— ✦ —</span></div>`;
+          document.body.appendChild(sheet);
+          sheet.querySelector(".saptapadi-sheet-backdrop")?.addEventListener("click",()=>sheet?.classList.remove("is-open"));
+          sheet.querySelector(".saptapadi-sheet-close")?.addEventListener("click",()=>sheet?.classList.remove("is-open"));
+        }
+        const title=sheet.querySelector<HTMLElement>(".saptapadi-sheet-title"), reflection=sheet.querySelector<HTMLElement>(".saptapadi-sheet-reflection");
+        if(title) title.textContent=vows[i][0]; if(reflection) reflection.textContent=vows[i][1];
+        sheet.classList.add("is-open");
+      };
+      star.addEventListener("click",handler); return {star,handler};
+    });
+    return () => { observer.disconnect(); handlers.forEach(({star,handler})=>star.removeEventListener("click",handler)); document.querySelector(".saptapadi-sheet")?.remove(); };
+  }, []);
 
   return (
     <>
@@ -17,8 +53,10 @@ export function PremiumAtmosphere() {
       {bells > 0 && <span className="bell-ripple" aria-hidden="true" />}
       <style jsx global>{`
         .lux-nav-actions button:last-child{position:relative;min-width:48px;display:inline-flex;align-items:center;justify-content:center;gap:5px;border:1px solid rgba(214,177,91,.18);border-radius:999px;background:rgba(12,10,7,.52);backdrop-filter:blur(12px);box-shadow:0 8px 25px rgba(0,0,0,.18);transition:.35s}.lux-nav-actions button:last-child:after{content:"";width:13px;height:10px;display:inline-block;background:linear-gradient(90deg,#cba65c 0 2px,transparent 2px 4px,#cba65c 4px 6px,transparent 6px 8px,#cba65c 8px 10px,transparent 10px 12px);animation:audioBars 1.15s ease-in-out infinite;opacity:.65}.lux-nav-actions button:last-child:hover{border-color:rgba(214,177,91,.55);box-shadow:0 0 28px rgba(214,177,91,.12)}@keyframes audioBars{0%,100%{transform:scaleY(.45)}50%{transform:scaleY(1.15)}}
+        .celestial-star.is-sequencing{animation:starArrival .75s cubic-bezier(.2,.8,.2,1) var(--star-delay) both}.celestial-star.is-sequencing.active{animation:none;transform:scale(1.16)}@keyframes starArrival{from{opacity:.08;transform:scale(.55);filter:blur(3px)}to{opacity:1;transform:scale(1);filter:blur(0)}}
+        .saptapadi-sheet{position:fixed;inset:0;z-index:10050;pointer-events:none;opacity:0;transition:opacity .35s ease}.saptapadi-sheet.is-open{opacity:1;pointer-events:auto}.saptapadi-sheet-backdrop{position:absolute;inset:0;background:rgba(0,0,0,.62);backdrop-filter:blur(8px)}.saptapadi-sheet-card{position:absolute;left:50%;bottom:18px;transform:translate(-50%,110%);width:min(680px,calc(100% - 24px));padding:28px 24px 30px;border:1px solid rgba(223,190,115,.4);background:linear-gradient(145deg,rgba(31,25,16,.97),rgba(7,7,6,.98));box-shadow:0 25px 80px rgba(0,0,0,.6),inset 0 0 50px rgba(204,163,84,.05);transition:transform .45s cubic-bezier(.2,.8,.2,1)}.saptapadi-sheet.is-open .saptapadi-sheet-card{transform:translate(-50%,0)}.saptapadi-sheet-close{position:absolute;right:12px;top:8px;border:0;background:transparent;color:#c7a45e;font-size:1.5rem;line-height:1;cursor:pointer}.saptapadi-sheet-kicker{display:block;font:500 .42rem var(--font-label);letter-spacing:.28em;color:#9b7a45}.saptapadi-sheet-title{display:block;margin-top:9px;font:400 clamp(1.7rem,5vw,2.5rem) var(--font-display);color:#f0dfb8}.saptapadi-sheet-reflection{margin:8px 0 0;color:#b9ad99;font:italic 1rem/1.6 var(--font-display)}.saptapadi-sheet-rule{display:block;margin-top:17px;color:#bd9650;font:500 .6rem var(--font-label);letter-spacing:.25em}
         .premium-bell{touch-action:manipulation}.premium-bell.is-ringing{animation:premiumBellPulse .8s ease}.bell-ripple{animation:bellRipple .8s ease both}@keyframes premiumBellPulse{25%{transform:rotate(-8deg)}50%{transform:rotate(8deg)}75%{transform:rotate(-4deg)}100%{transform:rotate(0)}}@keyframes bellRipple{from{opacity:.55;transform:scale(.75)}to{opacity:0;transform:scale(2.2)}}
-        @media(max-width:760px){.lux-nav-actions button:last-child{min-width:44px;padding:7px 9px}}
+        @media(max-width:760px){.lux-nav-actions button:last-child{min-width:44px;padding:7px 9px}.saptapadi-sheet-card{bottom:0;border-radius:22px 22px 0 0;padding-bottom:34px}}
       `}</style>
     </>
   );
