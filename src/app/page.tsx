@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 import { useEffect, useRef, useState, type ReactNode } from "react";
-import { ArrowUpRight, CalendarDays, MapPin, Volume2, VolumeX } from "lucide-react";
+import { ArrowUpRight, CalendarDays, MapPin } from "lucide-react";
 import { weddingConfig } from "@/config/wedding";
 import { PremiumAtmosphere } from "@/components/invitation/PremiumAtmosphere";
 import { LuxuryCountdown } from "@/components/invitation/LuxuryCountdown";
@@ -16,14 +16,13 @@ function GoldLine(){return <span className="lux-line" aria-hidden="true"/>}
 function Reveal({children,className=""}:{children:ReactNode;className?:string}){return <div className={`lux-reveal ${className}`}>{children}</div>}
 
 export default function Page(){
- const [opened,setOpened]=useState(false),[music,setMusic]=useState(false),[language,setLanguage]=useState<"EN"|"TE">("EN");
+ const [opened,setOpened]=useState(false),[language,setLanguage]=useState<"EN"|"TE">("EN");
  const [activeStar,setActiveStar]=useState(0); const audioRef=useRef<HTMLAudioElement>(null);
  useEffect(()=>{document.body.style.overflow=opened?"auto":"hidden";return()=>{document.body.style.overflow="auto"}},[opened]);
- const toggleMusic=async()=>{const a=audioRef.current;if(!a)return;if(music){a.pause();setMusic(false)}else{try{await a.play();setMusic(true)}catch{setMusic(false)}}};
  const blessings=["Dharma · a life of shared purpose","Prema · love that grows with every season","Maitri · friendship and companionship","Santosha · joy in the little moments","Sahacharya · walking together through life","Kutumba · two families becoming one","Akshaya · a bond that keeps blossoming"];
  const selectedBlessing=blessings[(activeStar||1)-1];
- return <div className="luxury-invitation"><PremiumAtmosphere/><audio ref={audioRef} loop preload="none" src={weddingConfig.music.source}/>{!opened&&<CinematicEnvelope onOpen={()=>setOpened(true)}/>} {opened&&<main>
-  <nav className="lux-nav"><a href="#top" className="lux-nav-mark">K<span>&</span>T</a><div className="lux-nav-links"><a href="#celebrations">Occasions</a><a href="#muhurtham">Muhurtham</a><a href="#gallery">Gallery</a><a href="#venue">Venue</a></div><div className="lux-nav-actions"><button aria-label="Switch language" onClick={()=>setLanguage(language==="EN"?"TE":"EN")}>{language}</button><button aria-label="Toggle music" onClick={toggleMusic}>{music?<Volume2 size={16}/>:<VolumeX size={16}/>}</button></div></nav>
+ return <div className="luxury-invitation"><PremiumAtmosphere/><audio ref={audioRef} loop preload="auto" src={weddingConfig.music.source}/>{!opened&&<CinematicEnvelope onOpen={()=>{const a=audioRef.current;if(a){a.volume=0;void a.play().catch(()=>{});}setOpened(true)}}/>} {opened&&<main>
+  <nav className="lux-nav"><a href="#top" className="lux-nav-mark">K<span>&</span>T</a><div className="lux-nav-links"><a href="#celebrations">Occasions</a><a href="#muhurtham">Muhurtham</a><a href="#gallery">Gallery</a><a href="#venue">Venue</a></div><div className="lux-nav-actions"><button aria-label="Switch language" onClick={()=>setLanguage(language==="EN"?"TE":"EN")}>{language}</button></div></nav>
   <section id="top" className="lux-hero"><div className="lux-hero-image"><Image src={weddingConfig.couplePhoto} alt="Kavya and Tejas" fill priority sizes="100vw" className="object-cover"/></div><div className="lux-hero-overlay"/><div className="lux-hero-copy"><p className="lux-micro">శుభమస్తు · WITH THE BLESSINGS OF OUR FAMILIES</p><h1>{language==="TE"?"కావ్య & తేజస్":<>Kavya <span>&</span> Tejas</>}</h1><GoldLine/><p className="lux-hero-date">27 · 08 · 2026</p><p className="lux-hero-sub">{language==="TE"?"మా వివాహ వేడుకకు మిమ్మల్ని ఆహ్వానిస్తున్నాము.":"We invite you to witness the beginning of a Telugu wedding — rooted in family, tradition and love."}</p></div><a href="#story" className="lux-scroll"><span>SCROLL TO ENTER</span></a></section>
   <section className="cultural-thread" aria-label="Telugu wedding heritage"><span>🌿 MANGO LEAVES</span><i>✦</i><span>✿ JASMINE</span><i>✦</i><span>🪔 DEEPAM</span><i>✦</i><span>◈ KOLAM</span><i>✦</i><span>AGNI</span></section>
   <ScratchDateReveal/>

@@ -6,6 +6,13 @@ export function CinematicEnvelope({ onOpen }: { onOpen: () => void }) {
   const [opening, setOpening] = useState(false);
   const open = () => {
     if (opening) return;
+    // Start audio directly inside the seal/envelope tap. Browser autoplay
+    // policies allow audible playback when it is initiated by user input.
+    const audio = document.querySelector<HTMLAudioElement>(".luxury-invitation > audio");
+    if (audio) {
+      audio.volume = 0;
+      void audio.play().catch(() => {});
+    }
     setOpening(true);
     window.setTimeout(onOpen, 900);
   };
