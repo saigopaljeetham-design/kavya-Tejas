@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
-    "prebuild": "node scripts/patch-invitation-audio.mjs",
+    "prebuild": "node scripts/patch-invitation-audio.mjs && node scripts/verify-public-assets.mjs",
     "build": "next build",
     "start": "next start",
     "lint": "eslint"
