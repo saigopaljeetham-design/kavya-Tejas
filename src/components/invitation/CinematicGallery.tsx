@@ -13,7 +13,7 @@ const memoryChapters = [
   "Hands held, hearts ready",
 ];
 
-export default function CinematicGallery() {
+export function CinematicGallery() {
   return (
     <section id="gallery" className="relative overflow-hidden px-5 py-28 sm:px-8 lg:px-12">
       <div className="pointer-events-none absolute inset-x-0 top-0 mx-auto flex max-w-6xl justify-between px-6 text-xs tracking-[0.5em] text-amber-200/25">
@@ -96,3 +96,5 @@ export default function CinematicGallery() {
     </section>
   );
 }
+
+export default CinematicGallery;
