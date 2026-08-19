@@ -1,0 +1,1 @@
+Temporary synchronization marker for the Vercel-connected kavya-Tejas repository. This branch is intended to carry the verified Project-2 wedding invitation state into kavya-Tejas without force-resetting its main branch.
