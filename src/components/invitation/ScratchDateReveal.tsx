@@ -2,104 +2,45 @@
 
 import { useEffect, useRef, useState } from "react";
 
-const REVEAL_THRESHOLD = 0.6;
+const REVEAL_THRESHOLD = 0.55;
+
+type Particle = { x:number; y:number; vx:number; vy:number; life:number; size:number; alpha:number };
 
 export function ScratchDateReveal() {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const particleRef = useRef<HTMLCanvasElement>(null);
   const wrapRef = useRef<HTMLDivElement>(null);
   const drawingRef = useRef(false);
-  const lastPointRef = useRef<{ x: number; y: number } | null>(null);
-  const rafRef = useRef<number | null>(null);
-  const particlesRef = useRef<Array<{ x: number; y: number; vx: number; vy: number; life: number; size: number }>>([]);
-  const [revealed, setRevealed] = useState(false);
-  const [progress, setProgress] = useState(0);
+  const lastPointRef = useRef<{x:number;y:number}|null>(null);
+  const rafRef = useRef<number|null>(null);
+  const particlesRef = useRef<Particle[]>([]);
+  const [revealed,setRevealed] = useState(false);
+  const [progress,setProgress] = useState(0);
 
-  const vibrate = (ms = 15) => {
-    if (typeof navigator !== "undefined" && "vibrate" in navigator) navigator.vibrate?.(ms);
+  const vibrate=(pattern:number|number[] = 15)=>{ if(typeof navigator!=="undefined" && "vibrate" in navigator) navigator.vibrate?.(pattern); };
+
+  const paintFoil=()=>{
+    const canvas=canvasRef.current,wrap=wrapRef.current;if(!canvas||!wrap)return;
+    const rect=wrap.getBoundingClientRect(),dpr=Math.min(window.devicePixelRatio||1,2);
+    canvas.width=Math.max(1,Math.round(rect.width*dpr));canvas.height=Math.max(1,Math.round(rect.height*dpr));canvas.style.width=`${rect.width}px`;canvas.style.height=`${rect.height}px`;
+    const ctx=canvas.getContext("2d");if(!ctx)return;ctx.setTransform(dpr,0,0,dpr,0,0);ctx.globalCompositeOperation="source-over";
+    const gradient=ctx.createLinearGradient(0,0,rect.width,rect.height);gradient.addColorStop(0,"#5b4219");gradient.addColorStop(.18,"#c49a43");gradient.addColorStop(.38,"#e0c16d");gradient.addColorStop(.55,"#8b6425");gradient.addColorStop(.76,"#d9b65c");gradient.addColorStop(1,"#5b3e16");ctx.fillStyle=gradient;ctx.fillRect(0,0,rect.width,rect.height);
+    const glow=ctx.createRadialGradient(rect.width*.5,rect.height*.45,5,rect.width*.5,rect.height*.45,rect.width*.7);glow.addColorStop(0,"rgba(255,242,190,.24)");glow.addColorStop(1,"rgba(255,242,190,0)");ctx.fillStyle=glow;ctx.fillRect(0,0,rect.width,rect.height);
+    for(let i=0;i<520;i++){const x=Math.random()*rect.width,y=Math.random()*rect.height,r=Math.random()*1.15+.2;ctx.fillStyle=`rgba(255,244,202,${Math.random()*.3})`;ctx.beginPath();ctx.arc(x,y,r,0,Math.PI*2);ctx.fill();}
+    ctx.strokeStyle="rgba(62,42,13,.68)";ctx.lineWidth=1;ctx.strokeRect(12,12,rect.width-24,rect.height-24);ctx.textAlign="center";ctx.textBaseline="middle";ctx.fillStyle="rgba(34,23,9,.82)";ctx.font=`600 ${Math.max(10,Math.min(14,rect.width/36))}px Arial`;ctx.fillText("HOLD & RUB TO REVEAL",rect.width/2,rect.height*.43);ctx.font=`400 ${Math.max(8,Math.min(10,rect.width/48))}px Arial`;ctx.fillStyle="rgba(49,34,14,.65)";ctx.fillText("DISCOVER OUR AUSPICIOUS DAY",rect.width/2,rect.height*.58);ctx.globalCompositeOperation="destination-out";ctx.lineCap="round";ctx.lineJoin="round";
   };
 
-  const paintFoil = () => {
-    const canvas = canvasRef.current;
-    const wrap = wrapRef.current;
-    if (!canvas || !wrap) return;
-    const rect = wrap.getBoundingClientRect();
-    const dpr = Math.min(window.devicePixelRatio || 1, 2);
-    canvas.width = Math.max(1, Math.round(rect.width * dpr));
-    canvas.height = Math.max(1, Math.round(rect.height * dpr));
-    canvas.style.width = `${rect.width}px`;
-    canvas.style.height = `${rect.height}px`;
-    const ctx = canvas.getContext("2d");
-    if (!ctx) return;
-    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
-    ctx.globalCompositeOperation = "source-over";
-    const gradient = ctx.createLinearGradient(0, 0, rect.width, rect.height);
-    gradient.addColorStop(0, "#5b4219"); gradient.addColorStop(.18, "#c49a43"); gradient.addColorStop(.38, "#e0c16d"); gradient.addColorStop(.55, "#8b6425"); gradient.addColorStop(.76, "#d9b65c"); gradient.addColorStop(1, "#5b3e16");
-    ctx.fillStyle = gradient; ctx.fillRect(0, 0, rect.width, rect.height);
-    const glow = ctx.createRadialGradient(rect.width*.5, rect.height*.45, 5, rect.width*.5, rect.height*.45, rect.width*.7);
-    glow.addColorStop(0, "rgba(255,242,190,.24)"); glow.addColorStop(1, "rgba(255,242,190,0)"); ctx.fillStyle = glow; ctx.fillRect(0, 0, rect.width, rect.height);
-    for (let i = 0; i < 520; i++) { const x = Math.random()*rect.width, y = Math.random()*rect.height, r = Math.random()*1.15+.2; ctx.fillStyle = `rgba(255,244,202,${Math.random()*.3})`; ctx.beginPath(); ctx.arc(x,y,r,0,Math.PI*2); ctx.fill(); }
-    ctx.strokeStyle = "rgba(62,42,13,.68)"; ctx.lineWidth = 1; ctx.strokeRect(12,12,rect.width-24,rect.height-24);
-    ctx.textAlign = "center"; ctx.textBaseline = "middle"; ctx.fillStyle = "rgba(34,23,9,.82)";
-    ctx.font = `600 ${Math.max(10,Math.min(14,rect.width/36))}px Arial`; ctx.fillText("HOLD & RUB TO REVEAL", rect.width/2, rect.height*.43);
-    ctx.font = `400 ${Math.max(8,Math.min(10,rect.width/48))}px Arial`; ctx.fillStyle = "rgba(49,34,14,.65)"; ctx.fillText("DISCOVER OUR AUSPICIOUS DAY", rect.width/2, rect.height*.58);
-    ctx.globalCompositeOperation = "destination-out"; ctx.lineCap = "round"; ctx.lineJoin = "round";
-  };
+  useEffect(()=>{if(!revealed)paintFoil();const onResize=()=>{if(!revealed)paintFoil()};window.addEventListener("resize",onResize);return()=>window.removeEventListener("resize",onResize)},[revealed]);
 
-  useEffect(() => {
-    if (!revealed) paintFoil();
-    const onResize = () => { if (!revealed) paintFoil(); };
-    window.addEventListener("resize", onResize);
-    return () => window.removeEventListener("resize", onResize);
-  }, [revealed]);
+  useEffect(()=>{const canvas=particleRef.current;if(!canvas)return;const resize=()=>{const rect=canvas.getBoundingClientRect(),dpr=Math.min(window.devicePixelRatio||1,2);canvas.width=rect.width*dpr;canvas.height=rect.height*dpr;canvas.getContext("2d")?.setTransform(dpr,0,0,dpr,0,0)};const draw=()=>{const ctx=canvas.getContext("2d");if(!ctx)return;const rect=canvas.getBoundingClientRect();ctx.clearRect(0,0,rect.width,rect.height);particlesRef.current=particlesRef.current.filter(p=>p.life>0);for(const p of particlesRef.current){p.x+=p.vx;p.y+=p.vy;p.vy+=.012;p.life-=.028;p.alpha=p.life;ctx.globalAlpha=Math.max(0,p.alpha);ctx.fillStyle=p.size>2?"#e8c56e":"#f8e8b4";ctx.beginPath();ctx.arc(p.x,p.y,p.size,0,Math.PI*2);ctx.fill()}ctx.globalAlpha=1;rafRef.current=requestAnimationFrame(draw)};resize();window.addEventListener("resize",resize);rafRef.current=requestAnimationFrame(draw);return()=>{window.removeEventListener("resize",resize);if(rafRef.current)cancelAnimationFrame(rafRef.current)}},[]);
 
-  useEffect(() => {
-    const canvas = particleRef.current;
-    if (!canvas) return;
-    const resize = () => { const rect = canvas.getBoundingClientRect(); const dpr = Math.min(window.devicePixelRatio || 1, 2); canvas.width = rect.width*dpr; canvas.height = rect.height*dpr; canvas.getContext("2d")?.setTransform(dpr,0,0,dpr,0,0); };
-    const draw = () => {
-      const ctx = canvas.getContext("2d"); if (!ctx) return;
-      const rect = canvas.getBoundingClientRect(); ctx.clearRect(0,0,rect.width,rect.height);
-      particlesRef.current = particlesRef.current.filter(p => p.life > 0);
-      for (const p of particlesRef.current) { p.x += p.vx; p.y += p.vy; p.vy += .015; p.life -= .025; ctx.globalAlpha = Math.max(0,p.life); ctx.fillStyle = "#f1d58c"; ctx.beginPath(); ctx.arc(p.x,p.y,p.size,0,Math.PI*2); ctx.fill(); }
-      ctx.globalAlpha = 1; rafRef.current = requestAnimationFrame(draw);
-    };
-    resize(); window.addEventListener("resize", resize); rafRef.current = requestAnimationFrame(draw);
-    return () => { window.removeEventListener("resize", resize); if (rafRef.current) cancelAnimationFrame(rafRef.current); };
-  }, []);
+  const spawnParticles=(x:number,y:number,count=5)=>{for(let i=0;i<count;i++)particlesRef.current.push({x,y,vx:(Math.random()-.5)*2.4,vy:-Math.random()*2.1-.2,life:.7+Math.random()*.3,alpha:1,size:Math.random()*2.3+1});if(particlesRef.current.length>180)particlesRef.current.splice(0,particlesRef.current.length-180)};
+  const reveal=()=>{if(revealed)return;setRevealed(true);setProgress(1);vibrate([30,50,30])};
+  const measureReveal=()=>{const canvas=canvasRef.current,ctx=canvas?.getContext("2d");if(!canvas||!ctx)return;const pixels=ctx.getImageData(0,0,canvas.width,canvas.height).data;const sampleW=64,sampleH=64,stepX=Math.max(1,Math.floor(canvas.width/sampleW)),stepY=Math.max(1,Math.floor(canvas.height/sampleH));let total=0,transparent=0;for(let y=0;y<canvas.height;y+=stepY)for(let x=0;x<canvas.width;x+=stepX){total++;if(pixels[(y*canvas.width+x)*4+3]<45)transparent++}const value=total?transparent/total:0;setProgress(value);if(value>=REVEAL_THRESHOLD)reveal()};
+  const pointFromEvent=(event:React.PointerEvent<HTMLCanvasElement>)=>{const rect=event.currentTarget.getBoundingClientRect();return{x:event.clientX-rect.left,y:event.clientY-rect.top}};
+  const eraseSegment=(ctx:CanvasRenderingContext2D,from:{x:number;y:number},to:{x:number;y:number},width:number)=>{const distance=Math.hypot(to.x-from.x,to.y-from.y),steps=Math.max(1,Math.ceil(distance/8));for(let i=0;i<=steps;i++){const t=i/steps,x=from.x+(to.x-from.x)*t,y=from.y+(to.y-from.y)*t;ctx.beginPath();ctx.arc(x,y,width/2,0,Math.PI*2);ctx.fill()}};
+  const scratch=(event:React.PointerEvent<HTMLCanvasElement>)=>{event.preventDefault();if(revealed||!drawingRef.current)return;const canvas=event.currentTarget,ctx=canvas.getContext("2d");if(!ctx)return;const point=pointFromEvent(event),previous=lastPointRef.current??point,dpr=Math.min(window.devicePixelRatio||1,2);ctx.setTransform(dpr,0,0,dpr,0,0);ctx.globalCompositeOperation="destination-out";eraseSegment(ctx,previous,point,Math.max(40,Math.min(58,canvas.getBoundingClientRect().width*.095)));spawnParticles(point.x,point.y,Math.random()>.4?5:3);lastPointRef.current=point;if(Math.random()>.72)measureReveal()};
+  const stopScratch=()=>{if(!drawingRef.current)return;drawingRef.current=false;lastPointRef.current=null;measureReveal()};
 
-  const spawnParticles = (x: number, y: number, count = 5) => {
-    for (let i=0;i<count;i++) particlesRef.current.push({ x, y, vx:(Math.random()-.5)*1.8, vy:-Math.random()*1.6-.2, life:.65+Math.random()*.35, size:1+Math.random()*2.2 });
-    if (particlesRef.current.length > 160) particlesRef.current.splice(0, particlesRef.current.length-160);
-  };
-
-  const reveal = () => { if (revealed) return; setRevealed(true); setProgress(1); vibrate(18); };
-
-  const measureReveal = () => {
-    const canvas = canvasRef.current, ctx = canvas?.getContext("2d"); if (!canvas || !ctx) return;
-    const pixels = ctx.getImageData(0,0,canvas.width,canvas.height).data;
-    const sampleW=64, sampleH=64, stepX=Math.max(1,Math.floor(canvas.width/sampleW)), stepY=Math.max(1,Math.floor(canvas.height/sampleH));
-    let total=0, transparent=0;
-    for(let y=0;y<canvas.height;y+=stepY) for(let x=0;x<canvas.width;x+=stepX){ total++; if(pixels[(y*canvas.width+x)*4+3]<45) transparent++; }
-    const value=total?transparent/total:0; setProgress(value); if(value>=REVEAL_THRESHOLD) reveal();
-  };
-
-  const pointFromEvent = (event: React.PointerEvent<HTMLCanvasElement>) => { const rect=event.currentTarget.getBoundingClientRect(); return {x:event.clientX-rect.left,y:event.clientY-rect.top}; };
-  const eraseSegment = (ctx:CanvasRenderingContext2D,from:{x:number;y:number},to:{x:number;y:number},width:number) => { const distance=Math.hypot(to.x-from.x,to.y-from.y),steps=Math.max(1,Math.ceil(distance/9)); for(let i=0;i<=steps;i++){const t=i/steps,x=from.x+(to.x-from.x)*t,y=from.y+(to.y-from.y)*t;ctx.beginPath();ctx.arc(x,y,width/2,0,Math.PI*2);ctx.fill();} };
-
-  const scratch = (event:React.PointerEvent<HTMLCanvasElement>) => {
-    event.preventDefault();
-    if(revealed||!drawingRef.current)return;
-    const canvas=event.currentTarget,ctx=canvas.getContext("2d");if(!ctx)return;
-    const point=pointFromEvent(event),previous=lastPointRef.current??point,dpr=Math.min(window.devicePixelRatio||1,2);
-    ctx.setTransform(dpr,0,0,dpr,0,0);ctx.globalCompositeOperation="destination-out";
-    const width=Math.max(40,Math.min(58,canvas.getBoundingClientRect().width*.095));
-    eraseSegment(ctx,previous,point,width); spawnParticles(point.x,point.y,Math.random()>.45?4:2); lastPointRef.current=point;
-    if(Math.random()>.78)measureReveal();
-  };
-  const stopScratch=()=>{if(!drawingRef.current)return;drawingRef.current=false;lastPointRef.current=null;measureReveal();};
-
-  return <section className="scratch-date-section" aria-label="Interactive wedding date reveal"><div className="scratch-date-inner"><p className="lux-micro gold">మంగళం · A LITTLE REVEAL</p><h2>The auspicious day.<br/><em>Hidden in gold.</em></h2><p className="scratch-lead">Hold and rub across the gold to reveal the day our Telugu wedding begins.</p><div className={`scratch-card ${revealed?"is-revealed":""}`} ref={wrapRef}><div className="scratch-date-underlay"><span>THURSDAY · ముహూర్తం</span><strong>27</strong><span>AUGUST · 2026</span><i>THE BEGINNING OF FOREVER · శుభమస్తు</i></div><canvas ref={particleRef} className="scratch-particles" aria-hidden="true"/><canvas ref={canvasRef} className="scratch-canvas" aria-hidden="true" onPointerDown={event=>{event.preventDefault();if(revealed)return;event.currentTarget.setPointerCapture(event.pointerId);drawingRef.current=true;lastPointRef.current=pointFromEvent(event);vibrate(10);const ctx=event.currentTarget.getContext("2d");if(ctx){const dpr=Math.min(window.devicePixelRatio||1,2);ctx.setTransform(dpr,0,0,dpr,0,0);ctx.globalCompositeOperation="destination-out"}}} onPointerMove={scratch} onPointerUp={stopScratch} onPointerCancel={stopScratch} onPointerLeave={()=>{if(drawingRef.current)stopScratch()}}/><div className="scratch-corner">K <i>&amp;</i> T</div><div className={`scratch-card-hint ${revealed?"hidden":""}`}>✦ HOLD & RUB ✦</div><div className="scratch-progress" aria-hidden="true"><span style={{width:`${Math.min(100,progress*100)}%`}}/></div></div><button className="scratch-accessible" type="button" onClick={reveal} disabled={revealed}>{revealed?"DATE REVEALED":"REVEAL WITHOUT SCRATCHING"}</button></div>
-    <style jsx global>{`.scratch-date-section{position:relative;overflow:hidden;background:#0a0907;color:#f3ead9;padding:120px 18px 145px;text-align:center}.scratch-date-section:before{content:"";position:absolute;inset:0;background:radial-gradient(circle at 50% 40%,rgba(194,146,52,.1),transparent 42%),radial-gradient(circle,#d9b66a 0 1px,transparent 1.6px);background-size:auto,145px 175px;opacity:.14}.scratch-date-inner{position:relative;z-index:2;max-width:620px;margin:auto}.scratch-date-inner h2{font:300 clamp(3rem,8vw,5.5rem)/.88 var(--font-display);letter-spacing:-.04em;margin:18px 0;color:#f1e7d6}.scratch-date-inner h2 em{font-style:italic;color:#c9a45b}.scratch-lead{font:400 .92rem/1.7 var(--font-body);color:#a49a8b;margin:20px auto 32px;max-width:460px}.scratch-card{position:relative;width:min(88vw,520px);aspect-ratio:1.72;margin:0 auto;overflow:hidden;border:1px solid rgba(220,183,99,.65);background:#15100a;box-shadow:0 35px 90px rgba(0,0,0,.6);touch-action:none;-webkit-user-select:none;user-select:none}.scratch-card:before{content:"";position:absolute;inset:12px;border:1px solid rgba(239,214,157,.25);z-index:8;pointer-events:none}.scratch-card:after{content:"";position:absolute;inset:17px;border:1px solid rgba(239,214,157,.1);z-index:8;pointer-events:none}.scratch-date-underlay{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:5px;background:radial-gradient(circle at 50% 42%,#5a421a,#1b1308 58%,#0b0805);color:#e8d29b}.scratch-date-underlay span{font:500 .5rem var(--font-label);letter-spacing:.34em}.scratch-date-underlay strong{font:300 clamp(4.5rem,15vw,7.5rem)/.82 var(--font-display);color:#f4dfaa}.scratch-date-underlay i{font:400 .45rem var(--font-label);letter-spacing:.24em;color:#b09a72;margin-top:8px}.scratch-canvas,.scratch-particles{position:absolute;inset:0;width:100%;height:100%}.scratch-canvas{cursor:crosshair;z-index:7}.scratch-particles{z-index:8;pointer-events:none}.scratch-card.is-revealed .scratch-canvas{opacity:0;transition:opacity .65s ease;pointer-events:none}.scratch-card.is-revealed .scratch-particles{opacity:0;transition:opacity 1s}.scratch-corner{position:absolute;z-index:9;top:25px;left:28px;font:400 .75rem var(--font-display);color:#f2d88f;pointer-events:none}.scratch-corner i{font-size:.55em;font-style:normal;color:#a7782b}.scratch-card-hint{position:absolute;z-index:9;left:50%;bottom:28px;transform:translateX(-50%);font:500 .43rem var(--font-label);letter-spacing:.2em;color:rgba(247,225,165,.7);white-space:nowrap;pointer-events:none;animation:scratchPulse 1.8s ease-in-out infinite}.scratch-card-hint.hidden{opacity:0;animation:none}.scratch-progress{position:absolute;z-index:10;left:24px;right:24px;bottom:17px;height:2px;background:rgba(246,219,159,.12);pointer-events:none}.scratch-progress span{display:block;height:100%;background:#e3c16e;transition:width .18s ease}.scratch-accessible{margin:20px auto 0;padding:11px 24px;border:1px solid rgba(210,168,78,.55);background:transparent;color:#d0ad61;font:500 .48rem var(--font-label);letter-spacing:.2em;transition:.3s}.scratch-accessible:hover:not(:disabled){background:#c9a45b;color:#090806}.scratch-accessible:disabled{opacity:.55}@keyframes scratchPulse{50%{opacity:.45;transform:translateX(-50%) scale(1.04)}}@media(max-width:760px){.scratch-date-section{padding:95px 12px 110px}.scratch-date-inner h2{font-size:clamp(2.8rem,13vw,4.4rem)}.scratch-lead{font-size:.86rem}.scratch-card{width:94vw}.scratch-corner{top:19px;left:21px}.scratch-card-hint{bottom:25px;font-size:.38rem}.scratch-progress{left:18px;right:18px;bottom:16px}.scratch-date-underlay span{font-size:.42rem}.scratch-date-underlay i{font-size:.36rem}}@media(prefers-reduced-motion:reduce){.scratch-canvas,.scratch-particles{transition:none}.scratch-card-hint{animation:none}}`}</style>
-  </section>;
+  return <section className="scratch-date-section" aria-label="Interactive wedding date reveal"><div className="scratch-date-inner"><p className="lux-micro gold">మంగళం · A LITTLE REVEAL</p><h2>The auspicious day.<br/><em>Hidden in gold.</em></h2><p className="scratch-lead">Hold and rub across the gold to reveal the day our Telugu wedding begins.</p><div className={`scratch-card ${revealed?"is-revealed":""}`} ref={wrapRef}><div className="scratch-date-underlay"><span>THURSDAY · ముహూర్తం</span><strong>27</strong><span>AUGUST · 2026</span><i>THE BEGINNING OF FOREVER · శుభమస్తు</i></div><canvas ref={particleRef} className="scratch-particles" aria-hidden="true"/><canvas ref={canvasRef} className="scratch-canvas" aria-hidden="true" onPointerDown={event=>{event.preventDefault();if(revealed)return;event.currentTarget.setPointerCapture(event.pointerId);drawingRef.current=true;lastPointRef.current=pointFromEvent(event);vibrate(10);}} onPointerMove={scratch} onPointerUp={stopScratch} onPointerCancel={stopScratch} onPointerLeave={()=>{if(drawingRef.current)stopScratch()}}/><div className="scratch-corner">K <i>&amp;</i> T</div><div className={`scratch-card-hint ${revealed?"hidden":""}`}>✦ HOLD & RUB ✦</div><div className="scratch-progress" aria-hidden="true"><span style={{width:`${Math.min(100,progress*100)}%`}}/></div></div><button className="scratch-accessible" type="button" onClick={reveal} disabled={revealed}>{revealed?"DATE REVEALED":"REVEAL WITHOUT SCRATCHING"}</button></div><style jsx global>{`.scratch-date-section{position:relative;overflow:hidden;background:#0a0907;color:#f3ead9;padding:120px 18px 145px;text-align:center}.scratch-date-section:before{content:"";position:absolute;inset:0;background:radial-gradient(circle at 50% 40%,rgba(194,146,52,.1),transparent 42%),radial-gradient(circle,#d9b66a 0 1px,transparent 1.6px);background-size:auto,145px 175px;opacity:.14}.scratch-date-inner{position:relative;z-index:2;max-width:620px;margin:auto}.scratch-date-inner h2{font:300 clamp(3rem,8vw,5.5rem)/.88 var(--font-display);letter-spacing:-.04em;margin:18px 0;color:#f1e7d6}.scratch-date-inner h2 em{font-style:italic;color:#c9a45b}.scratch-lead{font:400 .92rem/1.7 var(--font-body);color:#a49a8b;margin:20px auto 32px;max-width:460px}.scratch-card{position:relative;width:min(88vw,520px);aspect-ratio:1.72;margin:0 auto;overflow:hidden;border:1px solid rgba(220,183,99,.65);background:#15100a;box-shadow:0 35px 90px rgba(0,0,0,.6);touch-action:none;-webkit-user-select:none;user-select:none}.scratch-card:before{content:"";position:absolute;inset:12px;border:1px solid rgba(239,214,157,.25);z-index:8;pointer-events:none}.scratch-card:after{content:"";position:absolute;inset:17px;border:1px solid rgba(239,214,157,.1);z-index:8;pointer-events:none}.scratch-date-underlay{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:5px;background:radial-gradient(circle at 50% 42%,#5a421a,#1b1308 58%,#0b0805);color:#e8d29b}.scratch-date-underlay span{font:500 .5rem var(--font-label);letter-spacing:.34em}.scratch-date-underlay strong{font:300 clamp(4.5rem,15vw,7.5rem)/.82 var(--font-display);color:#f4dfaa}.scratch-date-underlay i{font:400 .45rem var(--font-label);letter-spacing:.24em;color:#b09a72;margin-top:8px}.scratch-canvas,.scratch-particles{position:absolute;inset:0;width:100%;height:100%}.scratch-canvas{cursor:crosshair;z-index:7}.scratch-particles{z-index:8;pointer-events:none}.scratch-card.is-revealed .scratch-canvas{opacity:0;transition:opacity .65s ease;pointer-events:none}.scratch-card.is-revealed .scratch-particles{opacity:0;transition:opacity 1s}.scratch-card.is-revealed:after{border-color:rgba(239,214,157,.38);box-shadow:inset 0 0 60px rgba(225,188,92,.12);transition:.8s}.scratch-corner{position:absolute;z-index:9;top:25px;left:28px;font:400 .75rem var(--font-display);color:#f2d88f;pointer-events:none}.scratch-corner i{font-size:.55em;font-style:normal;color:#a7782b}.scratch-card-hint{position:absolute;z-index:9;left:50%;bottom:28px;transform:translateX(-50%);font:500 .43rem var(--font-label);letter-spacing:.2em;color:rgba(247,225,165,.7);white-space:nowrap;pointer-events:none;animation:scratchPulse 1.8s ease-in-out infinite}.scratch-card-hint.hidden{opacity:0;animation:none}.scratch-progress{position:absolute;z-index:10;left:24px;right:24px;bottom:17px;height:2px;background:rgba(246,219,159,.12);pointer-events:none}.scratch-progress span{display:block;height:100%;background:#e3c16e;transition:width .18s ease}.scratch-accessible{margin:20px auto 0;padding:11px 24px;border:1px solid rgba(210,168,78,.55);background:transparent;color:#d0ad61;font:500 .48rem var(--font-label);letter-spacing:.2em;transition:.3s}.scratch-accessible:hover:not(:disabled){background:#c9a45b;color:#090806}.scratch-accessible:disabled{opacity:.55}@keyframes scratchPulse{50%{opacity:.45;transform:translateX(-50%) scale(1.04)}}@media(max-width:760px){.scratch-date-section{padding:95px 12px 110px}.scratch-date-inner h2{font-size:clamp(2.8rem,13vw,4.4rem)}.scratch-lead{font-size:.86rem}.scratch-card{width:94vw}.scratch-corner{top:19px;left:21px}.scratch-card-hint{bottom:25px;font-size:.38rem}.scratch-progress{left:18px;right:18px;bottom:16px}.scratch-date-underlay span{font-size:.42rem}.scratch-date-underlay i{font-size:.36rem}}@media(prefers-reduced-motion:reduce){.scratch-canvas,.scratch-particles{transition:none}.scratch-card-hint{animation:none}}`}</style></section>;
 }
