@@ -96,9 +96,8 @@ export const weddingConfig = {
   /*
    * Wedding gallery
    *
-   * Keep every existing gallery entry.
-   * The final five entries use the original HQ JPEG files.
-   * Nothing else is removed from the gallery.
+   * Updated to include only valid image files from public/images/gallery/
+   * Removed corrupted/empty images (DSC01291, DSC01957 copy, DSC02002 copy, DSC02017 copy1)
    */
   gallery: [
     {
@@ -124,41 +123,6 @@ export const weddingConfig = {
     {
       src: "/images/gallery/09-couple-car-wide.jpg",
       alt: "Kavya and Tejas on their journey together",
-    },
-
-    {
-      src: "/images/gallery/DSC01291.jpg",
-      alt: "A memory from Kavya and Tejas",
-    },
-
-    {
-      src: "/images/gallery/DSC01359 copy.jpg",
-      alt: "Kavya and Tejas walking together",
-    },
-
-    {
-      src: "/images/gallery/DSC01669.jpg",
-      alt: "Kavya and Tejas together",
-    },
-
-    {
-      src: "/images/gallery/DSC01686.jpg",
-      alt: "A candid moment of Kavya and Tejas",
-    },
-
-    {
-      src: "/images/gallery/DSC01957 copy.jpg",
-      alt: "A beautiful memory together",
-    },
-
-    {
-      src: "/images/gallery/DSC02002 copy.jpg",
-      alt: "A candid memory from their journey",
-    },
-
-    {
-      src: "/images/gallery/DSC02017 copy1.jpg",
-      alt: "Kavya and Tejas together",
     },
 
     {
